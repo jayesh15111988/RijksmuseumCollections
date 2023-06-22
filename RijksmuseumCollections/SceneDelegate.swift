@@ -16,8 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        let collectionsListSearchViewModel = MuseumCollectionsListSearchViewModel()
-        let collectionsListSearchViewController = MuseumCollectionsListSearchViewController(viewModel: collectionsListSearchViewModel)
+        let collectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: RequestHandler())
+        let collectionsListSearchViewController = MuseumCollectionsListSearchViewController(alertDisplayUtility: AlertDisplayUtility(), viewModel: collectionsListSearchViewModel)
 
         let navigationController = UINavigationController(rootViewController: collectionsListSearchViewController)
 
