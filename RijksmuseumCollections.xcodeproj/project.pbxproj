@@ -15,6 +15,8 @@
 		91C2CFB62A445FE800AE2152 /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFB52A445FE800AE2152 /* RequestHandler.swift */; };
 		91C2CFB92A44610E00AE2152 /* ArtObjectsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFB82A44610E00AE2152 /* ArtObjectsContainer.swift */; };
 		91C2CFBC2A4463C700AE2152 /* AlertDisplayUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFBB2A4463C700AE2152 /* AlertDisplayUtility.swift */; };
+		91C2CFBE2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFBD2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift */; };
+		91C2CFC12A448A9100AE2152 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFC02A448A9100AE2152 /* ReusableView.swift */; };
 		91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCA2A445100002D9B85 /* AppDelegate.swift */; };
 		91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */; };
 		91EBAFD42A445102002D9B85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD32A445102002D9B85 /* Assets.xcassets */; };
@@ -50,6 +52,8 @@
 		91C2CFB52A445FE800AE2152 /* RequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
 		91C2CFB82A44610E00AE2152 /* ArtObjectsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtObjectsContainer.swift; sourceTree = "<group>"; };
 		91C2CFBB2A4463C700AE2152 /* AlertDisplayUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDisplayUtility.swift; sourceTree = "<group>"; };
+		91C2CFBD2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtObjectCollectionViewCell.swift; sourceTree = "<group>"; };
+		91C2CFC02A448A9100AE2152 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		91EBAFC72A445100002D9B85 /* RijksmuseumCollections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RijksmuseumCollections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91EBAFCA2A445100002D9B85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +116,22 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		91C2CFBF2A448A8700AE2152 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				91C2CFC02A448A9100AE2152 /* ReusableView.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		91C2CFC22A44940000AE2152 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				91C2CFBD2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		91EBAFBE2A445100002D9B85 = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +155,8 @@
 		91EBAFC92A445100002D9B85 /* RijksmuseumCollections */ = {
 			isa = PBXGroup;
 			children = (
+				91C2CFC22A44940000AE2152 /* Cells */,
+				91C2CFBF2A448A8700AE2152 /* Protocols */,
 				91C2CFBA2A4463B000AE2152 /* Utilities */,
 				91C2CFB72A4460F700AE2152 /* Model */,
 				91C2CFAC2A4457E900AE2152 /* Style */,
@@ -324,7 +346,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				91C2CFB02A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift in Sources */,
+				91C2CFBE2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift in Sources */,
 				91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */,
+				91C2CFC12A448A9100AE2152 /* ReusableView.swift in Sources */,
 				91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */,
 				91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */,
 				91C2CFB92A44610E00AE2152 /* ArtObjectsContainer.swift in Sources */,

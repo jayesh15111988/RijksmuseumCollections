@@ -9,10 +9,23 @@ import Foundation
 
 struct ArtObjectsContainer: Decodable {
     let artObjects: [ArtObject]
-}
 
-struct ArtObject: Decodable {
-    let id: String
-    let title: String
-    let longTitle: String
+    struct ArtObject: Decodable {
+        let id: String
+        let title: String
+        let longTitle: String
+        let productionPlaces: [String]
+        let webImage: WebImage?
+        let headerImage: HeaderImage?
+        let principalOrFirstMaker: String?
+
+        struct WebImage: Decodable {
+            let url: URL?
+        }
+
+        struct HeaderImage: Decodable {
+            let url: URL?
+        }
+    }
+
 }

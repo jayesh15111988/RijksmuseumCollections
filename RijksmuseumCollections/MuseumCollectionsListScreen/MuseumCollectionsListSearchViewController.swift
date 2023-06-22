@@ -8,12 +8,18 @@
 import Combine
 import UIKit
 
+typealias DataSource = UICollectionViewDiffableDataSource<MuseumCollectionsListSearchViewController.Section, ArtObjectViewModel>
+
+typealias Snapshot = NSDiffableDataSourceSnapshot<MuseumCollectionsListSearchViewController.Section, ArtObjectViewModel>
+
 final class MuseumCollectionsListSearchViewController: UIViewController {
 
     private let viewModel: MuseumCollectionsListSearchViewModel
     private let alertDisplayUtility: AlertDisplayable
 
     private let searchBarThrottleInterval = 1.0
+
+    private lazy var dataSource = setupDatasource()
 
     private enum Constants {
         static let emptySearchKeywordStateInfoMessage = "Please start typing keyword in the search box to view the list of collections in Rijksmuseum"
@@ -58,6 +64,32 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         return activityIndicatorView
     }()
 
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+
+    private lazy var collectionViewLayout: UICollectionViewCompositionalLayout = {
+
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+
+            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
+
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200)), subitems: [item])
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 5.0, leading: 5.0, bottom: 5.0, trailing: 5.0)
+            //section.orthogonalScrollingBehavior = .groupPaging
+            return section
+        }
+        return layout
+    }()
+
+    enum Section {
+        case artObject
+    }
+
     private var subscriptions: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
@@ -77,13 +109,17 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         title = "Rijksmuseum Collection"
 
         searchBar.delegate = self
-
         userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
+
+        collectionView.register(ArtObjectCollectionViewCell.self, forCellWithReuseIdentifier: ArtObjectCollectionViewCell.reuseIdentifier)
+
+        collectionView.dataSource = dataSource
 
         view.addSubview(searchBar)
         view.addSubview(userInfoLabelParentView)
         userInfoLabelParentView.addSubview(userInfoLabel)
         view.addSubview(activityIndicatorView)
+        view.addSubview(collectionView)
     }
 
     private func layoutViews() {
@@ -113,19 +149,26 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
             activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
 
     private func setupSubscriptions() {
 
-        viewModel.$artObjects.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] artObjects in
+        viewModel.$artObjectViewModels.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] artObjects in
             guard let self else { return }
 
-            self.userInfoLabelParentView.isHidden = !artObjects.isEmpty
+            self.updateDisplayState(with: !artObjects.isEmpty)
 
             if artObjects.isEmpty {
                 self.userInfoLabel.text = Constants.emptyArtObjectsStateInfoMessage
             } else {
-                print(artObjects.count)
+                self.applySnapshot(with: artObjects)
             }
         }.store(in: &subscriptions)
 
@@ -145,8 +188,37 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         }.store(in: &subscriptions)
     }
 
+    private func applySnapshot(with viewModels: [ArtObjectViewModel]) {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.artObject])
+        snapshot.appendItems(viewModels)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+
     private func displayError(with message: String) {
         self.alertDisplayUtility.showAlert(with: "Error", message: message, actions: [], parentController: self)
+    }
+
+    private func updateDisplayState(with isShowingResultsList: Bool) {
+        self.userInfoLabelParentView.isHidden = isShowingResultsList
+        self.collectionView.isHidden = !isShowingResultsList
+    }
+
+    private func setupDatasource() -> DataSource {
+        let dataSource = DataSource(
+            collectionView: collectionView,
+            cellProvider: { (collectionView, indexPath, artObjectViewModel) ->
+                UICollectionViewCell? in
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: ArtObjectCollectionViewCell.reuseIdentifier,
+                    for: indexPath) as? ArtObjectCollectionViewCell else {
+                    //TODO: Add error handling due to nil cell
+                    return nil
+                }
+                cell.configure(with: artObjectViewModel)
+                return cell
+            })
+        return dataSource
     }
 }
 
@@ -156,14 +228,14 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
 
         if searchText.isEmpty {
             self.activityIndicatorView.stopAnimating()
-            self.userInfoLabelParentView.isHidden = false
+            updateDisplayState(with: false)
             self.userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
             return
         }
 
         // We use this function to throttle trigger of requests since we don't want to fire multiple requests as user types too rapidly
         Timer.scheduledTimer(withTimeInterval: searchBarThrottleInterval, repeats: false) { _ in
-            self.userInfoLabelParentView.isHidden = true
+            self.updateDisplayState(with: true)
             self.userInfoLabel.text = ""
             self.viewModel.searchCollections(with: searchText)
         }

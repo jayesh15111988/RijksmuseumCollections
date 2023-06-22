@@ -7,6 +7,16 @@
 
 import Foundation
 
+struct ArtObjectViewModel {
+    let id: String
+    let title: String
+    let longTitle: String
+    let productionPlacesList: String
+    let webImageURL: URL?
+    let headerImageURL: URL?
+    let makerName: String
+}
+
 final class MuseumCollectionsListSearchViewModel {
 
     private var currentPageNumber = 0
@@ -16,7 +26,7 @@ final class MuseumCollectionsListSearchViewModel {
 
     private var toLoadMoreCollections = true
 
-    @Published var artObjects: [ArtObject] = []
+    @Published var artObjectViewModels: [ArtObjectViewModel] = []
     @Published var errorMessage: String?
     @Published var toShowLoadingIndicator = false
 
@@ -30,7 +40,7 @@ final class MuseumCollectionsListSearchViewModel {
 
         currentSearchKeyword = searchText
         currentPageNumber = 0
-        self.artObjects.removeAll()
+        self.artObjectViewModels.removeAll()
 
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: currentPageNumber)) { [weak self] result in
 
@@ -39,10 +49,33 @@ final class MuseumCollectionsListSearchViewModel {
             self.toShowLoadingIndicator = false
             switch result {
             case .success(let artObjectsParentContainer):
-                self.artObjects = artObjectsParentContainer.artObjects
+
+                self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
+
             case .failure(let dataLoadError):
                 self.errorMessage = dataLoadError.errorMessageString()
             }
+        }
+    }
+
+    private func populateArtObjectViewModels(with artObjects: [ArtObjectsContainer.ArtObject]) {
+
+        let artObjectViewModels = artObjects.map { artObject -> ArtObjectViewModel in
+
+            let makerName: String
+
+            if let artMaker = artObject.principalOrFirstMaker {
+                makerName = "By \(artMaker)"
+            } else {
+                makerName = ""
+            }
+
+            return ArtObjectViewModel(id: artObject.id, title: artObject.title, longTitle: artObject.longTitle, productionPlacesList: artObject.productionPlaces.joined(separator: ", "), webImageURL: artObject.webImage?.url, headerImageURL: artObject.headerImage?.url, makerName: makerName) }
+
+        if artObjectViewModels.isEmpty {
+            self.artObjectViewModels = artObjectViewModels
+        } else {
+            self.artObjectViewModels.append(contentsOf: artObjectViewModels)
         }
     }
 
@@ -67,12 +100,22 @@ final class MuseumCollectionsListSearchViewModel {
                 if artObjectsParentContainer.artObjects.isEmpty {
                     self.toLoadMoreCollections = false
                 } else {
-                    self.artObjects.append(contentsOf: artObjectsParentContainer.artObjects)
+                    self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
                 }
             case .failure(let dataLoadError):
                 self.errorMessage = dataLoadError.errorMessageString()
             }
         }
 
+    }
+}
+
+extension ArtObjectViewModel: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func ==(lhs: ArtObjectViewModel, rhs: ArtObjectViewModel) -> Bool {
+        lhs.id == rhs.id
     }
 }
