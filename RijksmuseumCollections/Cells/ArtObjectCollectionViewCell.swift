@@ -18,7 +18,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
     private let coverImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
 
@@ -57,7 +57,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
             coverImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             coverImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             coverImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            coverImageView.heightAnchor.constraint(equalToConstant: Constants.imageHeight)
+            coverImageView.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.imageHeight)
         ])
 
         NSLayoutConstraint.activate([

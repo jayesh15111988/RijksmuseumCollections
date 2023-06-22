@@ -38,7 +38,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.placeholder = "Search keyword for collections"
+        searchBar.placeholder = "Search Keyword (Tap search to find)"
         return searchBar
     }()
 
@@ -116,12 +116,33 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         }
 
         collectionView.dataSource = dataSource
+        collectionView.collectionViewLayout = createLayout()
 
         view.addSubview(searchBar)
         view.addSubview(userInfoLabelParentView)
         userInfoLabelParentView.addSubview(userInfoLabel)
         view.addSubview(activityIndicatorView)
         view.addSubview(collectionView)
+    }
+
+    private func createLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+
+            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
+
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(300)), subitems: [item])
+
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .estimated(30))
+
+            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            header.pinToVisibleBounds = true
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.boundarySupplementaryItems = [header]
+
+            return section
+        }
+        return layout
     }
 
     private func registerViews() {
@@ -252,23 +273,23 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
 }
 
 extension MuseumCollectionsListSearchViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        guard let artObjectViewModel = dataSource.itemIdentifier(for: indexPath) else {
-            return .zero
-        }
-
-        let itemHeight = itemHeight(for: view.frame.width, artObjectViewModel: artObjectViewModel)
-
-        return CGSize(width: view.frame.width - 2 * Style.Padding.smallHorizontal, height: itemHeight)
-    }
-
-    func itemHeight(for width: CGFloat, artObjectViewModel: ArtObjectViewModel) -> CGFloat {
-
-        let totalPadding = 3 * Style.Padding.smallVertical
-
-        return ceil(Constants.fixedArtObjectImageHeight + artObjectViewModel.shortDescription.height(withConstrainedWidth: width, font: UIFont.systemFont(ofSize: 16.0)) + totalPadding)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+//        guard let artObjectViewModel = dataSource.itemIdentifier(for: indexPath) else {
+//            return .zero
+//        }
+//
+//        let itemHeight = itemHeight(for: view.frame.width, artObjectViewModel: artObjectViewModel)
+//
+//        return CGSize(width: view.frame.width - 2 * Style.Padding.smallHorizontal, height: itemHeight)
+//    }
+//
+//    func itemHeight(for width: CGFloat, artObjectViewModel: ArtObjectViewModel) -> CGFloat {
+//
+//        let totalPadding = 3 * Style.Padding.smallVertical
+//
+//        return ceil(Constants.fixedArtObjectImageHeight + artObjectViewModel.shortDescription.height(withConstrainedWidth: width, font: UIFont.systemFont(ofSize: 16.0)) + totalPadding)
+//    }
 }
 
 extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {

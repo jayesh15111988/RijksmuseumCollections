@@ -28,6 +28,7 @@ final class ArtObjectCollectionViewSectionHeaderView: UICollectionReusableView {
     }
 
     private func setupViews() {
+        backgroundColor = .white
         addSubview(topTitleLabel)
     }
 
