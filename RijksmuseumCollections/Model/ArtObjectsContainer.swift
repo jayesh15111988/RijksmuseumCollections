@@ -20,11 +20,11 @@ struct ArtObjectsContainer: Decodable {
         let principalOrFirstMaker: String?
 
         struct WebImage: Decodable {
-            let url: URL?
+            let url: String?
         }
 
         struct HeaderImage: Decodable {
-            let url: URL?
+            let url: String?
         }
     }
 

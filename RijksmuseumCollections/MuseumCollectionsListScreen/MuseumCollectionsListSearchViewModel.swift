@@ -12,9 +12,10 @@ struct ArtObjectViewModel {
     let title: String
     let longTitle: String
     let productionPlacesList: String
-    let webImageURL: URL?
-    let headerImageURL: URL?
-    let makerName: String
+    let webImageURL: String?
+    let headerImageURL: String?
+    let makerName: String?
+    let shortDescription: String
 }
 
 final class MuseumCollectionsListSearchViewModel {
@@ -62,15 +63,15 @@ final class MuseumCollectionsListSearchViewModel {
 
         let artObjectViewModels = artObjects.map { artObject -> ArtObjectViewModel in
 
-            let makerName: String
+            let shortDescription: String
 
             if let artMaker = artObject.principalOrFirstMaker {
-                makerName = "By \(artMaker)"
+                shortDescription = "\(artObject.title) By \(artMaker)"
             } else {
-                makerName = ""
+                shortDescription = "\(artObject.title)"
             }
 
-            return ArtObjectViewModel(id: artObject.id, title: artObject.title, longTitle: artObject.longTitle, productionPlacesList: artObject.productionPlaces.joined(separator: ", "), webImageURL: artObject.webImage?.url, headerImageURL: artObject.headerImage?.url, makerName: makerName) }
+            return ArtObjectViewModel(id: artObject.id, title: artObject.title, longTitle: artObject.longTitle, productionPlacesList: artObject.productionPlaces.joined(separator: ", "), webImageURL: artObject.webImage?.url, headerImageURL: artObject.headerImage?.url, makerName: artObject.principalOrFirstMaker, shortDescription: shortDescription) }
 
         if artObjectViewModels.isEmpty {
             self.artObjectViewModels = artObjectViewModels

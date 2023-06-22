@@ -25,6 +25,8 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         static let emptySearchKeywordStateInfoMessage = "Please start typing keyword in the search box to view the list of collections in Rijksmuseum"
 
         static let emptyArtObjectsStateInfoMessage = "No art objects found matching current search keyword. Please try searching with another keyword"
+
+        static let fixedArtObjectImageHeight: CGFloat = 200.0
     }
 
     init(alertDisplayUtility: AlertDisplayable, viewModel: MuseumCollectionsListSearchViewModel) {
@@ -44,6 +46,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
+        label.text = Constants.emptySearchKeywordStateInfoMessage
         return label
     }()
 
@@ -65,25 +68,10 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     }()
 
     private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        let viewLayout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: viewLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
-    }()
-
-    private lazy var collectionViewLayout: UICollectionViewCompositionalLayout = {
-
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
-            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200)), subitems: [item])
-
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 5.0, leading: 5.0, bottom: 5.0, trailing: 5.0)
-            //section.orthogonalScrollingBehavior = .groupPaging
-            return section
-        }
-        return layout
     }()
 
     enum Section {
@@ -91,6 +79,8 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     }
 
     private var subscriptions: Set<AnyCancellable> = []
+
+    var snapshot: Snapshot?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,7 +98,11 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         view.backgroundColor = .white
         title = "Rijksmuseum Collection"
 
+        updateDisplayState(with: false)
+
         searchBar.delegate = self
+        collectionView.delegate = self
+
         userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
 
         collectionView.register(ArtObjectCollectionViewCell.self, forCellWithReuseIdentifier: ArtObjectCollectionViewCell.reuseIdentifier)
@@ -191,7 +185,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     private func applySnapshot(with viewModels: [ArtObjectViewModel]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.artObject])
-        snapshot.appendItems(viewModels)
+        snapshot.appendItems(viewModels, toSection: .artObject)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
@@ -239,5 +233,46 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
             self.userInfoLabel.text = ""
             self.viewModel.searchCollections(with: searchText)
         }
+    }
+}
+
+extension MuseumCollectionsListSearchViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        guard let artObjectViewModel = dataSource.itemIdentifier(for: indexPath) else {
+            return .zero
+        }
+
+        let itemHeight = itemHeight(for: view.frame.width, artObjectViewModel: artObjectViewModel)
+
+        return CGSize(width: view.frame.width - 2 * Style.Padding.smallHorizontal, height: itemHeight)
+    }
+
+    func itemHeight(for width: CGFloat, artObjectViewModel: ArtObjectViewModel) -> CGFloat {
+
+        let totalPadding = 3 * Style.Padding.smallVertical
+
+        return ceil(Constants.fixedArtObjectImageHeight + artObjectViewModel.shortDescription.height(withConstrainedWidth: width, font: UIFont.systemFont(ofSize: 16.0)) + totalPadding)
+    }
+}
+
+extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let artObjectViewModel = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+        print(artObjectViewModel.shortDescription)
+    }
+}
+
+//Taken from: https://stackoverflow.com/questions/30450434/figure-out-size-of-uilabel-based-on-string-in-swift
+
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintInRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+
+        let boundingBox = self.boundingRect(with: constraintInRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
+
+        return ceil(boundingBox.height)
     }
 }

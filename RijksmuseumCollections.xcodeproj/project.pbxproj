@@ -17,6 +17,8 @@
 		91C2CFBC2A4463C700AE2152 /* AlertDisplayUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFBB2A4463C700AE2152 /* AlertDisplayUtility.swift */; };
 		91C2CFBE2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFBD2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift */; };
 		91C2CFC12A448A9100AE2152 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFC02A448A9100AE2152 /* ReusableView.swift */; };
+		91C2CFC52A44A33E00AE2152 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFC42A44A33E00AE2152 /* ImageDownloader.swift */; };
+		91C2CFC82A44A36700AE2152 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFC72A44A36700AE2152 /* Images.swift */; };
 		91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCA2A445100002D9B85 /* AppDelegate.swift */; };
 		91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */; };
 		91EBAFD42A445102002D9B85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD32A445102002D9B85 /* Assets.xcassets */; };
@@ -54,6 +56,8 @@
 		91C2CFBB2A4463C700AE2152 /* AlertDisplayUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDisplayUtility.swift; sourceTree = "<group>"; };
 		91C2CFBD2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtObjectCollectionViewCell.swift; sourceTree = "<group>"; };
 		91C2CFC02A448A9100AE2152 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
+		91C2CFC42A44A33E00AE2152 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		91C2CFC72A44A36700AE2152 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		91EBAFC72A445100002D9B85 /* RijksmuseumCollections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RijksmuseumCollections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91EBAFCA2A445100002D9B85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +115,7 @@
 		91C2CFBA2A4463B000AE2152 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				91C2CFC32A44A33400AE2152 /* ImageDownloader */,
 				91C2CFBB2A4463C700AE2152 /* AlertDisplayUtility.swift */,
 			);
 			path = Utilities;
@@ -130,6 +135,22 @@
 				91C2CFBD2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		91C2CFC32A44A33400AE2152 /* ImageDownloader */ = {
+			isa = PBXGroup;
+			children = (
+				91C2CFC42A44A33E00AE2152 /* ImageDownloader.swift */,
+			);
+			path = ImageDownloader;
+			sourceTree = "<group>";
+		};
+		91C2CFC62A44A35E00AE2152 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				91C2CFC72A44A36700AE2152 /* Images.swift */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		91EBAFBE2A445100002D9B85 = {
@@ -155,6 +176,7 @@
 		91EBAFC92A445100002D9B85 /* RijksmuseumCollections */ = {
 			isa = PBXGroup;
 			children = (
+				91C2CFC62A44A35E00AE2152 /* Images */,
 				91C2CFC22A44940000AE2152 /* Cells */,
 				91C2CFBF2A448A8700AE2152 /* Protocols */,
 				91C2CFBA2A4463B000AE2152 /* Utilities */,
@@ -347,10 +369,12 @@
 			files = (
 				91C2CFB02A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift in Sources */,
 				91C2CFBE2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift in Sources */,
+				91C2CFC52A44A33E00AE2152 /* ImageDownloader.swift in Sources */,
 				91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */,
 				91C2CFC12A448A9100AE2152 /* ReusableView.swift in Sources */,
 				91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */,
 				91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */,
+				91C2CFC82A44A36700AE2152 /* Images.swift in Sources */,
 				91C2CFB92A44610E00AE2152 /* ArtObjectsContainer.swift in Sources */,
 				91C2CFB22A445D4B00AE2152 /* APIRoute.swift in Sources */,
 				91C2CFBC2A4463C700AE2152 /* AlertDisplayUtility.swift in Sources */,
