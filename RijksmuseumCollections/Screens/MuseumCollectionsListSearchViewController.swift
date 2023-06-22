@@ -9,6 +9,13 @@ import UIKit
 
 final class MuseumCollectionsListSearchViewController: UIViewController {
 
+    private let viewModel: MuseumCollectionsListSearchViewModel
+
+    init(viewModel: MuseumCollectionsListSearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
@@ -38,10 +45,6 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
         setupViews()
         layoutViews()
-    }
-
-    init() {
-        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -89,11 +92,11 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // We use this function to throttle trigger of requests since we don't want to fire multiple requests as user types too rapidly
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
-            print(searchText)
             if searchText.isEmpty {
                 self.emptySearchInputLabelParentView.isHidden = false
             } else {
                 self.emptySearchInputLabelParentView.isHidden = true
+                self.viewModel.searchCollections(with: searchText)
             }
         }
     }

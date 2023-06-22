@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */; };
 		91C2CFAE2A4457FA00AE2152 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFAD2A4457FA00AE2152 /* Style.swift */; };
+		91C2CFB02A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFAF2A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift */; };
 		91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCA2A445100002D9B85 /* AppDelegate.swift */; };
 		91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */; };
 		91EBAFD42A445102002D9B85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD32A445102002D9B85 /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchViewController.swift; sourceTree = "<group>"; };
 		91C2CFAD2A4457FA00AE2152 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		91C2CFAF2A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchViewModel.swift; sourceTree = "<group>"; };
 		91EBAFC72A445100002D9B85 /* RijksmuseumCollections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RijksmuseumCollections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91EBAFCA2A445100002D9B85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		91EBAFFB2A4451BD002D9B85 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				91C2CFAF2A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91C2CFB02A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift in Sources */,
 				91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */,
 				91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */,
 				91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */,
