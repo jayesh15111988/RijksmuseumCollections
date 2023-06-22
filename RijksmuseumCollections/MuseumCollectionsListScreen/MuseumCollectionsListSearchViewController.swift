@@ -88,6 +88,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         setupViews()
         layoutViews()
         setupSubscriptions()
+        setupToolbar()
     }
 
     required init?(coder: NSCoder) {
@@ -100,8 +101,8 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
         updateDisplayState(with: false)
 
-        searchBar.delegate = self
         collectionView.delegate = self
+        searchBar.delegate = self
 
         userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
 
@@ -250,46 +251,37 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
             })
         return dataSource
     }
-}
 
-// MARK: UISearchBarDelegate
-extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    private func setupToolbar() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
 
-        if searchText.isEmpty {
-            self.activityIndicatorView.stopAnimating()
-            updateDisplayState(with: false)
-            self.userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
-            return
-        }
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        // We use this function to throttle trigger of requests since we don't want to fire multiple requests as user types too rapidly
-        Timer.scheduledTimer(withTimeInterval: searchBarThrottleInterval, repeats: false) { _ in
-            self.updateDisplayState(with: true)
-            self.userInfoLabel.text = ""
-            self.viewModel.searchCollections(with: searchText)
-        }
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonPressed))
+
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+
+        self.searchBar.searchTextField.inputAccessoryView = doneToolbar
+    }
+
+    @objc private func doneButtonPressed() {
+        self.searchBar.searchTextField.resignFirstResponder()
     }
 }
 
-extension MuseumCollectionsListSearchViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//        guard let artObjectViewModel = dataSource.itemIdentifier(for: indexPath) else {
-//            return .zero
-//        }
-//
-//        let itemHeight = itemHeight(for: view.frame.width, artObjectViewModel: artObjectViewModel)
-//
-//        return CGSize(width: view.frame.width - 2 * Style.Padding.smallHorizontal, height: itemHeight)
-//    }
-//
-//    func itemHeight(for width: CGFloat, artObjectViewModel: ArtObjectViewModel) -> CGFloat {
-//
-//        let totalPadding = 3 * Style.Padding.smallVertical
-//
-//        return ceil(Constants.fixedArtObjectImageHeight + artObjectViewModel.shortDescription.height(withConstrainedWidth: width, font: UIFont.systemFont(ofSize: 16.0)) + totalPadding)
-//    }
+extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.searchTextField.resignFirstResponder()
+        self.viewModel.searchCollections(with: searchBar.text)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            updateDisplayState(with: false)
+            userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
+        }
+    }
 }
 
 extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
@@ -302,7 +294,6 @@ extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
 }
 
 //Taken from: https://stackoverflow.com/questions/30450434/figure-out-size-of-uilabel-based-on-string-in-swift
-
 extension String {
     func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
         let constraintInRect = CGSize(width: width, height: .greatestFiniteMagnitude)

@@ -35,7 +35,9 @@ final class MuseumCollectionsListSearchViewModel {
         self.networkService = networkService
     }
 
-    func searchCollections(with searchText: String) {
+    func searchCollections(with searchText: String?) {
+
+        guard let searchText else { return }
 
         self.toShowLoadingIndicator = true
 
