@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */; };
 		91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCA2A445100002D9B85 /* AppDelegate.swift */; };
 		91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */; };
-		91EBAFCF2A445100002D9B85 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCE2A445100002D9B85 /* ViewController.swift */; };
-		91EBAFD22A445100002D9B85 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD02A445100002D9B85 /* Main.storyboard */; };
 		91EBAFD42A445102002D9B85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD32A445102002D9B85 /* Assets.xcassets */; };
 		91EBAFD72A445102002D9B85 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD52A445102002D9B85 /* LaunchScreen.storyboard */; };
 		91EBAFE22A445103002D9B85 /* RijksmuseumCollectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFE12A445103002D9B85 /* RijksmuseumCollectionsTests.swift */; };
@@ -36,11 +35,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchViewController.swift; sourceTree = "<group>"; };
 		91EBAFC72A445100002D9B85 /* RijksmuseumCollections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RijksmuseumCollections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91EBAFCA2A445100002D9B85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		91EBAFCE2A445100002D9B85 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		91EBAFD12A445100002D9B85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		91EBAFD32A445102002D9B85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91EBAFD62A445102002D9B85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91EBAFD82A445102002D9B85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -99,10 +97,12 @@
 		91EBAFC92A445100002D9B85 /* RijksmuseumCollections */ = {
 			isa = PBXGroup;
 			children = (
+				91EBAFFD2A4451CD002D9B85 /* NetworkService */,
+				91EBAFFC2A4451C3002D9B85 /* Coordinators */,
+				91EBAFFB2A4451BD002D9B85 /* ViewModels */,
+				91EBAFFA2A4451B7002D9B85 /* Screens */,
 				91EBAFCA2A445100002D9B85 /* AppDelegate.swift */,
 				91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */,
-				91EBAFCE2A445100002D9B85 /* ViewController.swift */,
-				91EBAFD02A445100002D9B85 /* Main.storyboard */,
 				91EBAFD32A445102002D9B85 /* Assets.xcassets */,
 				91EBAFD52A445102002D9B85 /* LaunchScreen.storyboard */,
 				91EBAFD82A445102002D9B85 /* Info.plist */,
@@ -125,6 +125,35 @@
 				91EBAFED2A445103002D9B85 /* RijksmuseumCollectionsUITestsLaunchTests.swift */,
 			);
 			path = RijksmuseumCollectionsUITests;
+			sourceTree = "<group>";
+		};
+		91EBAFFA2A4451B7002D9B85 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		91EBAFFB2A4451BD002D9B85 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		91EBAFFC2A4451C3002D9B85 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		91EBAFFD2A4451CD002D9B85 /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NetworkService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +262,6 @@
 			files = (
 				91EBAFD72A445102002D9B85 /* LaunchScreen.storyboard in Resources */,
 				91EBAFD42A445102002D9B85 /* Assets.xcassets in Resources */,
-				91EBAFD22A445100002D9B85 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,7 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91EBAFCF2A445100002D9B85 /* ViewController.swift in Sources */,
+				91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */,
 				91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */,
 				91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */,
 			);
@@ -297,14 +325,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		91EBAFD02A445100002D9B85 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				91EBAFD12A445100002D9B85 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		91EBAFD52A445102002D9B85 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -440,11 +460,11 @@
 				DEVELOPMENT_TEAM = MV3J9MQS8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RijksmuseumCollections/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,9 +472,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = XYZ.RijksmuseumCollections;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -468,11 +491,11 @@
 				DEVELOPMENT_TEAM = MV3J9MQS8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RijksmuseumCollections/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,9 +503,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = XYZ.RijksmuseumCollections;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
