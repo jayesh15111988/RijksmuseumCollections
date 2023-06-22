@@ -105,7 +105,15 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
         userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
 
-        collectionView.register(ArtObjectCollectionViewCell.self, forCellWithReuseIdentifier: ArtObjectCollectionViewCell.reuseIdentifier)
+        registerViews()
+
+        dataSource.supplementaryViewProvider = { (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
+            if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ArtObjectCollectionViewSectionHeaderView.reuseIdentifier, for: indexPath) as? ArtObjectCollectionViewSectionHeaderView {
+                headerView.configure(with: "Collection Items")
+                return headerView
+            }
+            return nil
+        }
 
         collectionView.dataSource = dataSource
 
@@ -114,6 +122,11 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         userInfoLabelParentView.addSubview(userInfoLabel)
         view.addSubview(activityIndicatorView)
         view.addSubview(collectionView)
+    }
+
+    private func registerViews() {
+        collectionView.register(ArtObjectCollectionViewCell.self, forCellWithReuseIdentifier: ArtObjectCollectionViewCell.reuseIdentifier)
+        collectionView.register(ArtObjectCollectionViewSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ArtObjectCollectionViewSectionHeaderView.reuseIdentifier)
     }
 
     private func layoutViews() {
@@ -156,6 +169,8 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
         viewModel.$artObjectViewModels.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] artObjects in
             guard let self else { return }
+
+            guard self.searchBar.text?.isEmpty == false else { return }
 
             self.updateDisplayState(with: !artObjects.isEmpty)
 

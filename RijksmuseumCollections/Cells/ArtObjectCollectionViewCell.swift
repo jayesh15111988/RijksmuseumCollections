@@ -39,7 +39,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
     }()
 
     override init(frame: CGRect) {
-        super.init(frame: .zero)
+        super.init(frame: frame)
         setupViews()
         layoutViews()
     }
@@ -98,6 +98,6 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
 
 extension ArtObjectCollectionViewCell: ReusableView {
     static var reuseIdentifier: String {
-        return String(describing: self)
+        String(describing: self)
     }
 }
