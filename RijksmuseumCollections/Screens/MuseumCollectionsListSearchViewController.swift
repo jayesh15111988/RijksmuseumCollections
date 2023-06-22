@@ -40,6 +40,14 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         return view
     }()
 
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView(frame: .zero)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.style = .large
+        activityIndicatorView.color = .darkGray
+        return activityIndicatorView
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -60,6 +68,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         view.addSubview(searchBar)
         view.addSubview(emptySearchInputLabelParentView)
         emptySearchInputLabelParentView.addSubview(emptySearchInputLabel)
+        view.addSubview(activityIndicatorView)
     }
 
     private func layoutViews() {
@@ -84,6 +93,11 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
             emptySearchInputLabel.leadingAnchor.constraint(equalTo: emptySearchInputLabelParentView.leadingAnchor, constant: Style.Padding.smallHorizontal),
             emptySearchInputLabel.trailingAnchor.constraint(equalTo: emptySearchInputLabelParentView.trailingAnchor, constant: -Style.Padding.smallHorizontal),
         ])
+
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
 }
 
@@ -94,9 +108,11 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
             if searchText.isEmpty {
                 self.emptySearchInputLabelParentView.isHidden = false
+                self.activityIndicatorView.stopAnimating()
             } else {
                 self.emptySearchInputLabelParentView.isHidden = true
                 self.viewModel.searchCollections(with: searchText)
+                self.activityIndicatorView.startAnimating()
             }
         }
     }
