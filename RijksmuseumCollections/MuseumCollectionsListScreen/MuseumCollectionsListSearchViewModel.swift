@@ -31,6 +31,8 @@ final class MuseumCollectionsListSearchViewModel {
     @Published var errorMessage: String?
     @Published var toShowLoadingIndicator = false
 
+    weak var coordinator: MuseumCollectionsListSearchCoordinator?
+
     init(networkService: RequestHandling) {
         self.networkService = networkService
     }
@@ -109,7 +111,10 @@ final class MuseumCollectionsListSearchViewModel {
                 self.errorMessage = dataLoadError.errorMessageString()
             }
         }
+    }
 
+    func navigateToDetailsScreen(with viewModel: ArtObjectViewModel) {
+        coordinator.navigateToDetailsScreen(with: viewModel)
     }
 }
 

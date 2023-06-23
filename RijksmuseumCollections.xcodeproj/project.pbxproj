@@ -20,6 +20,9 @@
 		91C2CFC52A44A33E00AE2152 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFC42A44A33E00AE2152 /* ImageDownloader.swift */; };
 		91C2CFC82A44A36700AE2152 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFC72A44A36700AE2152 /* Images.swift */; };
 		91C2CFCB2A44DBE800AE2152 /* ArtObjectCollectionViewSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFCA2A44DBE800AE2152 /* ArtObjectCollectionViewSectionHeaderView.swift */; };
+		91C2CFCD2A45699E00AE2152 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFCC2A45699E00AE2152 /* AppCoordinator.swift */; };
+		91C2CFCF2A4569B400AE2152 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFCE2A4569B400AE2152 /* Coordinator.swift */; };
+		91C2CFD12A456A1C00AE2152 /* MuseumCollectionsListSearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFD02A456A1C00AE2152 /* MuseumCollectionsListSearchCoordinator.swift */; };
 		91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCA2A445100002D9B85 /* AppDelegate.swift */; };
 		91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */; };
 		91EBAFD42A445102002D9B85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD32A445102002D9B85 /* Assets.xcassets */; };
@@ -60,6 +63,9 @@
 		91C2CFC42A44A33E00AE2152 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		91C2CFC72A44A36700AE2152 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		91C2CFCA2A44DBE800AE2152 /* ArtObjectCollectionViewSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtObjectCollectionViewSectionHeaderView.swift; sourceTree = "<group>"; };
+		91C2CFCC2A45699E00AE2152 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		91C2CFCE2A4569B400AE2152 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		91C2CFD02A456A1C00AE2152 /* MuseumCollectionsListSearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchCoordinator.swift; sourceTree = "<group>"; };
 		91EBAFC72A445100002D9B85 /* RijksmuseumCollections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RijksmuseumCollections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91EBAFCA2A445100002D9B85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -163,6 +169,13 @@
 			path = SectionHeader;
 			sourceTree = "<group>";
 		};
+		91C2CFD22A456DAB00AE2152 /* MuseumCollectionsDetailsScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MuseumCollectionsDetailsScreen;
+			sourceTree = "<group>";
+		};
 		91EBAFBE2A445100002D9B85 = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +199,7 @@
 		91EBAFC92A445100002D9B85 /* RijksmuseumCollections */ = {
 			isa = PBXGroup;
 			children = (
+				91C2CFD22A456DAB00AE2152 /* MuseumCollectionsDetailsScreen */,
 				91C2CFC92A44DBC800AE2152 /* SectionHeader */,
 				91C2CFC62A44A35E00AE2152 /* Images */,
 				91C2CFC22A44940000AE2152 /* Cells */,
@@ -227,6 +241,7 @@
 			children = (
 				91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */,
 				91C2CFAF2A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift */,
+				91C2CFD02A456A1C00AE2152 /* MuseumCollectionsListSearchCoordinator.swift */,
 			);
 			path = MuseumCollectionsListScreen;
 			sourceTree = "<group>";
@@ -234,6 +249,8 @@
 		91EBAFFC2A4451C3002D9B85 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				91C2CFCC2A45699E00AE2152 /* AppCoordinator.swift */,
+				91C2CFCE2A4569B400AE2152 /* Coordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -380,13 +397,16 @@
 			files = (
 				91C2CFB02A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift in Sources */,
 				91C2CFBE2A448A7300AE2152 /* ArtObjectCollectionViewCell.swift in Sources */,
+				91C2CFD12A456A1C00AE2152 /* MuseumCollectionsListSearchCoordinator.swift in Sources */,
 				91C2CFC52A44A33E00AE2152 /* ImageDownloader.swift in Sources */,
 				91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */,
+				91C2CFCD2A45699E00AE2152 /* AppCoordinator.swift in Sources */,
 				91C2CFC12A448A9100AE2152 /* ReusableView.swift in Sources */,
 				91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */,
 				91C2CFCB2A44DBE800AE2152 /* ArtObjectCollectionViewSectionHeaderView.swift in Sources */,
 				91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */,
 				91C2CFC82A44A36700AE2152 /* Images.swift in Sources */,
+				91C2CFCF2A4569B400AE2152 /* Coordinator.swift in Sources */,
 				91C2CFB92A44610E00AE2152 /* ArtObjectsContainer.swift in Sources */,
 				91C2CFB22A445D4B00AE2152 /* APIRoute.swift in Sources */,
 				91C2CFBC2A4463C700AE2152 /* AlertDisplayUtility.swift in Sources */,

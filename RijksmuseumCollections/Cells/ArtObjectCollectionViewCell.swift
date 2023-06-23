@@ -83,7 +83,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
     func configure(with viewModel: ArtObjectViewModel) {
         artObjectTitleLabel.text = viewModel.shortDescription
 
-        imageDownloader.downloadImage(with: viewModel.webImageURL, completionHandler: { [weak self] (image, isCached, urlString) in
+        imageDownloader.downloadImage(with: viewModel.headerImageURL, completionHandler: { [weak self] (image, isCached, urlString) in
             guard let self else { return }
             self.coverImageView.image = image
         }, placeholderImage: Images.placeholder)

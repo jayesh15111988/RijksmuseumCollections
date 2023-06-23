@@ -289,7 +289,7 @@ extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
         guard let artObjectViewModel = dataSource.itemIdentifier(for: indexPath) else {
             return
         }
-        print(artObjectViewModel.shortDescription)
+        viewModel.navigateToDetailsScreen(with: artObjectViewModel)
     }
 }
 
