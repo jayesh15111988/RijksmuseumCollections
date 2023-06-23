@@ -190,6 +190,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     private func setupSubscriptions() {
 
         viewModel.$loadingState.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] loadingState in
+
             guard let self else { return }
 
             switch loadingState {
@@ -201,11 +202,14 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
                 guard self.searchBar.text?.isEmpty == false else { return }
                 self.updateDisplayState(with: !artObjects.isEmpty)
                 self.applySnapshot(with: artObjects)
+                self.activityIndicatorView.stopAnimating()
             case .failure(let errorMessage):
                 self.displayError(with: errorMessage)
+                self.activityIndicatorView.stopAnimating()
             case .emptyResult:
                 self.updateDisplayState(with: false)
                 self.userInfoLabel.text = Constants.emptyArtObjectsStateInfoMessage
+                self.activityIndicatorView.stopAnimating()
             }
         }.store(in: &subscriptions)
     }

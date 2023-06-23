@@ -32,14 +32,15 @@ final class MuseumCollectionsListSearchViewModel {
         static let listOffsetToStartLoadingNextBatch = 5
     }
 
-    var artObjectViewModels: [ArtObjectViewModel] = []
+    private var artObjectViewModels: [ArtObjectViewModel] = []
+    var currentSearchKeyword = ""
+
     private var currentPageNumber = 1
-    private var currentSearchKeyword = ""
-    private var totalNumberOfObjects = 0
+    var totalNumberOfObjects = 0
 
     private let networkService: RequestHandling
 
-    private var toLoadMoreCollections = true
+    var toLoadMoreCollections = true
 
     @Published var loadingState: LoadingState = .idle
 
@@ -73,7 +74,6 @@ final class MuseumCollectionsListSearchViewModel {
 
                 guard artObjectsParentContainer.count != 0 else {
                     self.loadingState = .emptyResult
-                    self.loadingState = .idle
                     return
                 }
 
@@ -83,7 +83,6 @@ final class MuseumCollectionsListSearchViewModel {
             case .failure(let dataLoadError):
                 self.loadingState = .failure(errorMessage: dataLoadError.errorMessageString())
             }
-            self.loadingState = .idle
         }
     }
 
@@ -116,9 +115,7 @@ final class MuseumCollectionsListSearchViewModel {
         }
         self.loadingState = .success(viewModels: self.artObjectViewModels)
 
-        if artObjectViewModels.count == totalNumberOfObjects {
-            toLoadMoreCollections = false
-        }
+        toLoadMoreCollections = artObjectViewModels.count < totalNumberOfObjects
     }
 
     func toLoadNextPage(currentCellIndex: Int) -> Bool {
@@ -143,7 +140,6 @@ final class MuseumCollectionsListSearchViewModel {
             case .failure(let dataLoadError):
                 self.loadingState = .failure(errorMessage: dataLoadError.errorMessageString())
             }
-            self.loadingState = .idle
         }
     }
 
