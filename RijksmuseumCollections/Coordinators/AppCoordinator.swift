@@ -11,10 +11,11 @@ final class AppCoordinator: Coordinator {
 
     let window: UIWindow
 
-    var rootViewController: UINavigationController?
+    var rootViewController: UINavigationController
 
     init(window: UIWindow) {
         self.window = window
+        self.rootViewController = UINavigationController()
     }
 
     func start() {
@@ -23,13 +24,11 @@ final class AppCoordinator: Coordinator {
 
     //MARK: Private methods
     private func goToCollectionsListSearchPage() {
-        let navigationController = UINavigationController()
-        self.rootViewController = navigationController
 
-        let collectionsListSearchCoordinator = MuseumCollectionsListSearchCoordinator(navController: navigationController)
+        let collectionsListSearchCoordinator = MuseumCollectionsListSearchCoordinator(navController: rootViewController)
         collectionsListSearchCoordinator.start()
 
-        self.window.rootViewController = navigationController
+        self.window.rootViewController = rootViewController
         self.window.makeKeyAndVisible()
     }
 }

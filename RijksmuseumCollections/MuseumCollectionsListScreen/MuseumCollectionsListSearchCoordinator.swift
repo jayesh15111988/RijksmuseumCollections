@@ -9,7 +9,7 @@ import UIKit
 
 final class MuseumCollectionsListSearchCoordinator: Coordinator {
 
-    var rootViewController: UINavigationController?
+    var rootViewController: UINavigationController
 
     init(navController: UINavigationController) {
         self.rootViewController = navController
@@ -22,11 +22,12 @@ final class MuseumCollectionsListSearchCoordinator: Coordinator {
 
         collectionsListSearchViewModel.coordinator = self
 
-        self.rootViewController?.pushViewController(collectionsListSearchViewController, animated: true)
+        self.rootViewController.pushViewController(collectionsListSearchViewController, animated: true)
     }
 
     func navigateToDetailsScreen(with viewModel: ArtObjectViewModel) {
-        //TODO:
+        let collectionsDetailsCoordinator = MuseumCollectionsDetailsCoordinator(navController: self.rootViewController, viewModel: viewModel)
+        collectionsDetailsCoordinator.start()
     }
 }
 
