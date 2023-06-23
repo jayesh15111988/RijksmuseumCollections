@@ -122,8 +122,8 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         view.addSubview(searchBar)
         view.addSubview(userInfoLabelParentView)
         userInfoLabelParentView.addSubview(userInfoLabel)
-        view.addSubview(activityIndicatorView)
         view.addSubview(collectionView)
+        view.addSubview(activityIndicatorView)
     }
 
     private func createLayout() -> UICollectionViewLayout {
@@ -223,7 +223,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         var snapshot = Snapshot()
         snapshot.appendSections([.artObject])
         snapshot.appendItems(viewModels, toSection: .artObject)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
     private func displayError(with message: String) {
@@ -290,6 +290,13 @@ extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
             return
         }
         viewModel.navigateToDetailsScreen(with: artObjectViewModel)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if viewModel.toLoadNextPage(currentCellIndex: indexPath.row) {
+            viewModel.loadNextPage()
+        }
+        print("Current index path \(indexPath.row)")
     }
 }
 

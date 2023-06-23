@@ -9,6 +9,7 @@ import Foundation
 
 struct ArtObjectsContainer: Decodable {
     let artObjects: [ArtObject]
+    let count: Int
 
     struct ArtObject: Decodable {
         let id: String

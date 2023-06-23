@@ -20,8 +20,13 @@ struct ArtObjectViewModel {
 
 final class MuseumCollectionsListSearchViewModel {
 
-    private var currentPageNumber = 0
+    enum Constants {
+        static let listOffsetToStartLoadingNextBatch = 5
+    }
+
+    private var currentPageNumber = 1
     private var currentSearchKeyword = ""
+    private var totalNumberOfObjects = 0
 
     private let networkService: RequestHandling
 
@@ -43,9 +48,8 @@ final class MuseumCollectionsListSearchViewModel {
 
         self.toShowLoadingIndicator = true
 
+        resetPreviousSearchState()
         currentSearchKeyword = searchText
-        currentPageNumber = 0
-        self.artObjectViewModels.removeAll()
 
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: currentPageNumber)) { [weak self] result in
 
@@ -55,12 +59,19 @@ final class MuseumCollectionsListSearchViewModel {
             switch result {
             case .success(let artObjectsParentContainer):
 
+                self.totalNumberOfObjects = artObjectsParentContainer.count
                 self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
-
             case .failure(let dataLoadError):
                 self.errorMessage = dataLoadError.errorMessageString()
             }
         }
+    }
+
+    private func resetPreviousSearchState() {
+        currentPageNumber = 1
+        toLoadMoreCollections = true
+        totalNumberOfObjects = 0
+        artObjectViewModels.removeAll()
     }
 
     private func populateArtObjectViewModels(with artObjects: [ArtObjectsContainer.ArtObject]) {
@@ -77,15 +88,22 @@ final class MuseumCollectionsListSearchViewModel {
 
             return ArtObjectViewModel(id: artObject.id, title: artObject.title, longTitle: artObject.longTitle, productionPlacesList: artObject.productionPlaces.joined(separator: ", "), webImageURL: artObject.webImage?.url, headerImageURL: artObject.headerImage?.url, makerName: artObject.principalOrFirstMaker, shortDescription: shortDescription) }
 
-        if artObjectViewModels.isEmpty {
+        if self.artObjectViewModels.isEmpty {
             self.artObjectViewModels = artObjectViewModels
         } else {
             self.artObjectViewModels.append(contentsOf: artObjectViewModels)
         }
+
+        if artObjectViewModels.count == totalNumberOfObjects {
+            toLoadMoreCollections = false
+        }
+    }
+
+    func toLoadNextPage(currentCellIndex: Int) -> Bool {
+        return currentCellIndex == artObjectViewModels.count - Constants.listOffsetToStartLoadingNextBatch
     }
 
     func loadNextPage() {
-
         guard toLoadMoreCollections else {
             return
         }
@@ -101,12 +119,7 @@ final class MuseumCollectionsListSearchViewModel {
 
             switch result {
             case .success(let artObjectsParentContainer):
-
-                if artObjectsParentContainer.artObjects.isEmpty {
-                    self.toLoadMoreCollections = false
-                } else {
-                    self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
-                }
+                self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
             case .failure(let dataLoadError):
                 self.errorMessage = dataLoadError.errorMessageString()
             }
