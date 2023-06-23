@@ -10,6 +10,7 @@ import UIKit
 protocol ImageDownloadable {
     func downloadImage(with imageUrlString: String?,
                        completionHandler: @escaping (UIImage?, Bool, String?) -> Void)
+    func clearCache()
 }
 
 // Image downloader utility class. We are going to use the singleton instance to be able to download required images and store them into in-memory cache.
@@ -120,6 +121,22 @@ final class ImageDownloader: ImageDownloadable {
         // Reading from the dictionary should happen in the thread-safe manner.
         serialQueueForDataTasks.sync {
             return imagesDownloadTasks[urlString]
+        }
+    }
+
+    func clearCache() {
+        self.serialQueueForImages.sync(flags: .barrier) {
+            self.cachedImages.removeAll()
+        }
+
+        for (_, downloadTask) in imagesDownloadTasks {
+            if downloadTask.state == .running {
+                downloadTask.cancel()
+            }
+        }
+
+        serialQueueForDataTasks.sync(flags: .barrier) {
+            imagesDownloadTasks.removeAll()
         }
     }
 }

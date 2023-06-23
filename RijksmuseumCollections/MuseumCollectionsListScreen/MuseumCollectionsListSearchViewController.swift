@@ -271,6 +271,7 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
         if searchText.isEmpty {
             updateDisplayState(with: false)
             userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
+            viewModel.resetSearchState()
         }
     }
 }

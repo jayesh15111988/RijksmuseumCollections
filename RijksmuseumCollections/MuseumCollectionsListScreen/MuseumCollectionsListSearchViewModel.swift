@@ -45,11 +45,14 @@ final class MuseumCollectionsListSearchViewModel {
 
     var coordinator: MuseumCollectionsListSearchCoordinator?
 
+    let imageDownloader: ImageDownloadable
+
     let title: String
 
-    init(networkService: RequestHandling) {
+    init(networkService: RequestHandling, imageDownloader: ImageDownloadable = ImageDownloader.shared) {
         self.networkService = networkService
         self.title = "Rijksmuseum Collection"
+        self.imageDownloader = imageDownloader
     }
 
     func searchCollections(with searchText: String?) {
@@ -58,7 +61,7 @@ final class MuseumCollectionsListSearchViewModel {
 
         self.loadingState = .loading
 
-        resetPreviousSearchState()
+        resetSearchState()
         currentSearchKeyword = searchText
 
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: currentPageNumber)) { [weak self] result in
@@ -84,11 +87,12 @@ final class MuseumCollectionsListSearchViewModel {
         }
     }
 
-    private func resetPreviousSearchState() {
+    func resetSearchState() {
         currentPageNumber = 1
         toLoadMoreCollections = true
         totalNumberOfObjects = 0
         artObjectViewModels.removeAll()
+        imageDownloader.clearCache()
     }
 
     private func populateArtObjectViewModels(with artObjects: [ArtObjectsContainer.ArtObject]) {
