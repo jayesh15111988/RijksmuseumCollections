@@ -97,7 +97,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
     private func setupViews() {
         view.backgroundColor = .white
-        title = "Rijksmuseum Collection"
+        title = viewModel.title
 
         updateDisplayState(with: false)
 
@@ -189,32 +189,23 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
     private func setupSubscriptions() {
 
-        viewModel.$artObjectViewModels.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] artObjects in
+        viewModel.$loadingState.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] loadingState in
             guard let self else { return }
 
-            guard self.searchBar.text?.isEmpty == false else { return }
-
-            self.updateDisplayState(with: !artObjects.isEmpty)
-
-            if artObjects.isEmpty {
-                self.userInfoLabel.text = Constants.emptyArtObjectsStateInfoMessage
-            } else {
-                self.applySnapshot(with: artObjects)
-            }
-        }.store(in: &subscriptions)
-
-        viewModel.$errorMessage.receive(on: DispatchQueue.main).compactMap { $0 }.sink { [weak self] errorMessage in
-            self?.displayError(with: errorMessage)
-        }.store(in: &subscriptions)
-
-        viewModel.$toShowLoadingIndicator.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] toShowLoadingIndicator in
-
-            guard let self else { return }
-
-            if toShowLoadingIndicator {
-                self.activityIndicatorView.startAnimating()
-            } else {
+            switch loadingState {
+            case .idle:
                 self.activityIndicatorView.stopAnimating()
+            case .loading:
+                self.activityIndicatorView.startAnimating()
+            case .success(let artObjects):
+                guard self.searchBar.text?.isEmpty == false else { return }
+                self.updateDisplayState(with: !artObjects.isEmpty)
+                self.applySnapshot(with: artObjects)
+            case .failure(let errorMessage):
+                self.displayError(with: errorMessage)
+            case .emptyResult:
+                self.updateDisplayState(with: false)
+                self.userInfoLabel.text = Constants.emptyArtObjectsStateInfoMessage
             }
         }.store(in: &subscriptions)
     }
@@ -253,7 +244,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     }
 
     private func setupToolbar() {
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: view.frame.width, height: 44))
 
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
@@ -296,7 +287,6 @@ extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
         if viewModel.toLoadNextPage(currentCellIndex: indexPath.row) {
             viewModel.loadNextPage()
         }
-        print("Current index path \(indexPath.row)")
     }
 }
 

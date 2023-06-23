@@ -20,10 +20,19 @@ struct ArtObjectViewModel {
 
 final class MuseumCollectionsListSearchViewModel {
 
+    enum LoadingState {
+        case idle
+        case loading
+        case success(viewModels: [ArtObjectViewModel])
+        case failure(errorMessage: String)
+        case emptyResult
+    }
+
     enum Constants {
         static let listOffsetToStartLoadingNextBatch = 5
     }
 
+    var artObjectViewModels: [ArtObjectViewModel] = []
     private var currentPageNumber = 1
     private var currentSearchKeyword = ""
     private var totalNumberOfObjects = 0
@@ -32,21 +41,22 @@ final class MuseumCollectionsListSearchViewModel {
 
     private var toLoadMoreCollections = true
 
-    @Published var artObjectViewModels: [ArtObjectViewModel] = []
-    @Published var errorMessage: String?
-    @Published var toShowLoadingIndicator = false
+    @Published var loadingState: LoadingState = .idle
 
     var coordinator: MuseumCollectionsListSearchCoordinator?
 
+    let title: String
+
     init(networkService: RequestHandling) {
         self.networkService = networkService
+        self.title = "Rijksmuseum Collection"
     }
 
     func searchCollections(with searchText: String?) {
 
         guard let searchText else { return }
 
-        self.toShowLoadingIndicator = true
+        self.loadingState = .loading
 
         resetPreviousSearchState()
         currentSearchKeyword = searchText
@@ -55,15 +65,22 @@ final class MuseumCollectionsListSearchViewModel {
 
             guard let self else { return }
 
-            self.toShowLoadingIndicator = false
             switch result {
             case .success(let artObjectsParentContainer):
 
+                guard artObjectsParentContainer.count != 0 else {
+                    self.loadingState = .emptyResult
+                    self.loadingState = .idle
+                    return
+                }
+
                 self.totalNumberOfObjects = artObjectsParentContainer.count
                 self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
+
             case .failure(let dataLoadError):
-                self.errorMessage = dataLoadError.errorMessageString()
+                self.loadingState = .failure(errorMessage: dataLoadError.errorMessageString())
             }
+            self.loadingState = .idle
         }
     }
 
@@ -93,6 +110,7 @@ final class MuseumCollectionsListSearchViewModel {
         } else {
             self.artObjectViewModels.append(contentsOf: artObjectViewModels)
         }
+        self.loadingState = .success(viewModels: self.artObjectViewModels)
 
         if artObjectViewModels.count == totalNumberOfObjects {
             toLoadMoreCollections = false
@@ -108,21 +126,20 @@ final class MuseumCollectionsListSearchViewModel {
             return
         }
 
-        self.toShowLoadingIndicator = true
+        self.loadingState = .loading
         currentPageNumber += 1
 
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: currentSearchKeyword, pageNumber: currentPageNumber)) { [weak self] result in
 
             guard let self else { return }
 
-            self.toShowLoadingIndicator = false
-
             switch result {
             case .success(let artObjectsParentContainer):
                 self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
             case .failure(let dataLoadError):
-                self.errorMessage = dataLoadError.errorMessageString()
+                self.loadingState = .failure(errorMessage: dataLoadError.errorMessageString())
             }
+            self.loadingState = .idle
         }
     }
 
