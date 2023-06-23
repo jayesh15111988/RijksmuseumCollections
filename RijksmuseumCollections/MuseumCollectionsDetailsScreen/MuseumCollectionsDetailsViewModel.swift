@@ -14,7 +14,7 @@ final class MuseumCollectionsDetailsViewModel {
     let collectionImageURL: String?
     let shortTitle: String
     let longTitle: String
-    let artist: String?
+    let artist: String
     let productionPlaces: String
 
     init(artObjectViewModel: ArtObjectViewModel) {

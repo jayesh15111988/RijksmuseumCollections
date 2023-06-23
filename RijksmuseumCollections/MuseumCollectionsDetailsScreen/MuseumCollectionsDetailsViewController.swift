@@ -10,6 +10,11 @@ import UIKit
 final class MuseumCollectionsDetailsViewController: UIViewController {
 
     private let viewModel: MuseumCollectionsDetailsViewModel
+    private let imageDownloader: ImageDownloadable
+
+    private enum Constants {
+        static let imageHeight: CGFloat = 300
+    }
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -26,14 +31,53 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
         return scrollView
     }()
 
+    private let artObjectImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         layoutViews()
+        configureViews(with: self.viewModel)
+    }
+
+    func configureViews(with viewModel: MuseumCollectionsDetailsViewModel) {
+        let longTitleLabel = getLabelWith(text: viewModel.longTitle)
+        let productionPlacesLabel = getLabelWith(text: viewModel.productionPlaces)
+        let artistLabel = getLabelWith(text: viewModel.artist)
+
+        stackView.addArrangedSubview(longTitleLabel)
+        stackView.addArrangedSubview(artObjectImageView)
+        stackView.addArrangedSubview(artistLabel)
+        stackView.addArrangedSubview(productionPlacesLabel)
+
+        NSLayoutConstraint.activate([
+            artObjectImageView.heightAnchor.constraint(equalToConstant: Constants.imageHeight)
+        ])
+
+        NSLayoutConstraint.activate([
+            longTitleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
+        ])
+
+        NSLayoutConstraint.activate([
+            productionPlacesLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
+        ])
+
+        NSLayoutConstraint.activate([
+            artistLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
+        ])
+
+        imageDownloader.downloadImage(with: viewModel.collectionImageURL, completionHandler: { [weak self] (image, isCached, urlString) in
+            guard let self else { return }
+            self.artObjectImageView.image = image
+        }, placeholderImage: Images.placeholder)
     }
 
     private func setupViews() {
-
         self.title = viewModel.shortTitle
         self.view.backgroundColor = .white
         view.addSubview(scrollView)
@@ -49,25 +93,27 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
         ])
 
         NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Style.Padding.smallHorizontal),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Style.Padding.smallHorizontal),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
-
-        for i in 0..<10 {
-            let label = UILabel(frame: .zero)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.numberOfLines = 0
-            label.text = "Line 1 ds d asd as das d s sdf sd fsd fsd fsd f sdf sdf sdf sd fsd fs df sd fsd fsd f\(i)\nLine 2\(i)\nLine 3\(i)"
-            label.heightAnchor.constraint(greaterThanOrEqualToConstant: 0).isActive = true
-            stackView.addArrangedSubview(label)
-            //label.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
-        }
     }
 
-    init(viewModel: MuseumCollectionsDetailsViewModel) {
+    init(viewModel: MuseumCollectionsDetailsViewModel, imageDownloader: ImageDownloadable = ImageDownloader.shared) {
         self.viewModel = viewModel
+        self.imageDownloader = imageDownloader
         super.init(nibName: nil, bundle: nil)
+    }
+
+    private func getLabelWith(text: String) -> UILabel {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.text = text
+        label.textAlignment = .left
+        return label
     }
     
     required init?(coder: NSCoder) {
