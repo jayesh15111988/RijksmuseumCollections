@@ -9,8 +9,7 @@ import UIKit
 
 protocol ImageDownloadable {
     func downloadImage(with imageUrlString: String?,
-                       completionHandler: @escaping (UIImage?, Bool, String?) -> Void,
-                       placeholderImage: UIImage?)
+                       completionHandler: @escaping (UIImage?, Bool, String?) -> Void)
 }
 
 // Image downloader utility class. We are going to use the singleton instance to be able to download required images and store them into in-memory cache.
@@ -39,11 +38,9 @@ final class ImageDownloader: ImageDownloadable {
      - Parameter placeholderImage: Placeholder image to display as we're downloading them from the server
      */
     func downloadImage(with imageUrlString: String?,
-                       completionHandler: @escaping (UIImage?, Bool, String?) -> Void,
-                       placeholderImage: UIImage?) {
+                       completionHandler: @escaping (UIImage?, Bool, String?) -> Void) {
 
         guard let imageUrlString = imageUrlString else {
-            completionHandler(placeholderImage, true, nil)
             return
         }
 
@@ -51,7 +48,6 @@ final class ImageDownloader: ImageDownloadable {
             completionHandler(image, true, imageUrlString)
         } else {
             guard let url = URL(string: imageUrlString) else {
-                completionHandler(placeholderImage, true, imageUrlString)
                 return
             }
 
@@ -62,17 +58,17 @@ final class ImageDownloader: ImageDownloadable {
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
 
                 guard let data = data else {
-                    self.executeClosureOnMainThread(with: completionHandler, image: placeholderImage, isCached: false, imageURLString: imageUrlString)
+                    self.executeClosureOnMainThread(with: completionHandler, image: nil, isCached: false, imageURLString: imageUrlString)
                     return
                 }
 
                 if let _ = error {
-                    self.executeClosureOnMainThread(with: completionHandler, image: placeholderImage, isCached: false, imageURLString: imageUrlString)
+                    self.executeClosureOnMainThread(with: completionHandler, image: nil, isCached: false, imageURLString: imageUrlString)
                     return
                 }
 
                 guard let image = UIImage(data: data) else {
-                    self.executeClosureOnMainThread(with: completionHandler, image: placeholderImage, isCached: false, imageURLString: imageUrlString)
+                    self.executeClosureOnMainThread(with: completionHandler, image: nil, isCached: false, imageURLString: imageUrlString)
                     return
                 }
                 self.serialQueueForImages.sync(flags: .barrier) {
@@ -128,3 +124,15 @@ final class ImageDownloader: ImageDownloadable {
     }
 }
 
+extension UIImageView {
+    func downloadImage(with imageUrlString: String?,
+                       placeholderImage: UIImage?,
+                       imageDownloader: ImageDownloadable = ImageDownloader.shared) {
+        self.image = placeholderImage
+
+        imageDownloader.downloadImage(with: imageUrlString, completionHandler: { [weak self] (image, isCached, urlString) in
+            guard let self, let image else { return }
+            self.image = image
+        })
+    }
+}

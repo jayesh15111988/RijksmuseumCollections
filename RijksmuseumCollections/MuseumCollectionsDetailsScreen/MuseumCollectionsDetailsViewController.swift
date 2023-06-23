@@ -71,10 +71,7 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
             artistLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
         ])
 
-        imageDownloader.downloadImage(with: viewModel.collectionImageURL, completionHandler: { [weak self] (image, isCached, urlString) in
-            guard let self else { return }
-            self.artObjectImageView.image = image
-        }, placeholderImage: Images.placeholder)
+        self.artObjectImageView.downloadImage(with: viewModel.collectionImageURL, placeholderImage: Images.placeholder)
     }
 
     private func setupViews() {
