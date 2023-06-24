@@ -17,8 +17,6 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     private let viewModel: MuseumCollectionsListSearchViewModel
     private let alertDisplayUtility: AlertDisplayable
 
-    private let searchBarThrottleInterval = 1.0
-
     private lazy var dataSource = setupDatasource()
 
     private enum Constants {
@@ -29,20 +27,20 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         static let fixedArtObjectImageHeight: CGFloat = 200.0
     }
 
-    init(alertDisplayUtility: AlertDisplayable, viewModel: MuseumCollectionsListSearchViewModel) {
+    init(alertDisplayUtility: AlertDisplayable = AlertDisplayUtility(), viewModel: MuseumCollectionsListSearchViewModel) {
         self.viewModel = viewModel
         self.alertDisplayUtility = alertDisplayUtility
         super.init(nibName: nil, bundle: nil)
     }
 
-    private let searchBar: UISearchBar = {
+    let searchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.placeholder = "Search Keyword (Tap search to find)"
         return searchBar
     }()
 
-    private let userInfoLabel: UILabel = {
+    let userInfoLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -50,7 +48,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         return label
     }()
 
-    private let userInfoLabelParentView: UIView = {
+    let userInfoLabelParentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.masksToBounds = true
@@ -67,7 +65,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         return activityIndicatorView
     }()
 
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: viewLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false

@@ -40,6 +40,8 @@
 		91C2CFFD2A47160300AE2152 /* RequestHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFFC2A47160300AE2152 /* RequestHandlerTests.swift */; };
 		91C2D0002A471C7D00AE2152 /* ReuseIdentifierGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFFF2A471C7D00AE2152 /* ReuseIdentifierGeneratorTests.swift */; };
 		91C2D0032A471CFE00AE2152 /* ArtObjectCollectionViewSectionHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2D0022A471CFE00AE2152 /* ArtObjectCollectionViewSectionHeaderViewTests.swift */; };
+		91C2D0052A47255A00AE2152 /* MuseumCollectionsListSearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2D0042A47255A00AE2152 /* MuseumCollectionsListSearchViewControllerTests.swift */; };
+		91C2D0072A47436700AE2152 /* MockAlertDisplayUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2D0062A47436700AE2152 /* MockAlertDisplayUtility.swift */; };
 		91EBAFCB2A445100002D9B85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCA2A445100002D9B85 /* AppDelegate.swift */; };
 		91EBAFCD2A445100002D9B85 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */; };
 		91EBAFD42A445102002D9B85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91EBAFD32A445102002D9B85 /* Assets.xcassets */; };
@@ -99,6 +101,8 @@
 		91C2CFFC2A47160300AE2152 /* RequestHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestHandlerTests.swift; sourceTree = "<group>"; };
 		91C2CFFF2A471C7D00AE2152 /* ReuseIdentifierGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifierGeneratorTests.swift; sourceTree = "<group>"; };
 		91C2D0022A471CFE00AE2152 /* ArtObjectCollectionViewSectionHeaderViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtObjectCollectionViewSectionHeaderViewTests.swift; sourceTree = "<group>"; };
+		91C2D0042A47255A00AE2152 /* MuseumCollectionsListSearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchViewControllerTests.swift; sourceTree = "<group>"; };
+		91C2D0062A47436700AE2152 /* MockAlertDisplayUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAlertDisplayUtility.swift; sourceTree = "<group>"; };
 		91EBAFC72A445100002D9B85 /* RijksmuseumCollections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RijksmuseumCollections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91EBAFCA2A445100002D9B85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91EBAFCC2A445100002D9B85 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				91C2CFE02A46124700AE2152 /* MuseumCollectionsListSearchViewModelTests.swift */,
+				91C2D0042A47255A00AE2152 /* MuseumCollectionsListSearchViewControllerTests.swift */,
 			);
 			path = MuseumCollectionsListScreenTests;
 			sourceTree = "<group>";
@@ -232,6 +237,7 @@
 			children = (
 				91C2CFE92A46133000AE2152 /* MockRequestHandler.swift */,
 				91C2CFFA2A4715CD00AE2152 /* URLProtocolMock.swift */,
+				91C2D0062A47436700AE2152 /* MockAlertDisplayUtility.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -562,9 +568,11 @@
 				91C2CFF62A4711AF00AE2152 /* ArtObjectCollectionViewCellTests.swift in Sources */,
 				91C2CFF92A47136E00AE2152 /* APIRouteTests.swift in Sources */,
 				91C2CFDD2A460DEB00AE2152 /* MuseumCollectionsDetailsViewModelTests.swift in Sources */,
+				91C2D0072A47436700AE2152 /* MockAlertDisplayUtility.swift in Sources */,
 				91C2CFE12A46124700AE2152 /* MuseumCollectionsListSearchViewModelTests.swift in Sources */,
 				91C2D0032A471CFE00AE2152 /* ArtObjectCollectionViewSectionHeaderViewTests.swift in Sources */,
 				91C2CFFB2A4715CD00AE2152 /* URLProtocolMock.swift in Sources */,
+				91C2D0052A47255A00AE2152 /* MuseumCollectionsListSearchViewControllerTests.swift in Sources */,
 				91C2CFFD2A47160300AE2152 /* RequestHandlerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

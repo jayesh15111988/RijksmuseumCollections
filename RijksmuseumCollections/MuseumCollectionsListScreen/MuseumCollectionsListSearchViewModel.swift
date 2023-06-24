@@ -124,7 +124,7 @@ final class MuseumCollectionsListSearchViewModel {
         }
         self.loadingState = .success(viewModels: self.artObjectViewModels)
 
-        toLoadMoreCollections = artObjectViewModels.count < totalNumberOfObjects
+        toLoadMoreCollections = self.artObjectViewModels.count < totalNumberOfObjects
     }
 
     func toLoadNextPage(currentCellIndex: Int) -> Bool {
