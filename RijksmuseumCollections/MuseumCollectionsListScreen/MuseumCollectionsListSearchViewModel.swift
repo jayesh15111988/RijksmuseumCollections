@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias LoadingState = MuseumCollectionsListSearchViewModel.LoadingState
+
 struct ArtObjectViewModel {
     let id: String
     let title: String
@@ -32,10 +34,10 @@ final class MuseumCollectionsListSearchViewModel {
         static let listOffsetToStartLoadingNextBatch = 5
     }
 
-    private var artObjectViewModels: [ArtObjectViewModel] = []
+    var artObjectViewModels: [ArtObjectViewModel] = []
     var currentSearchKeyword = ""
 
-    private var currentPageNumber = 1
+    var currentPageNumber = 1
     var totalNumberOfObjects = 0
 
     private let networkService: RequestHandling
@@ -58,11 +60,17 @@ final class MuseumCollectionsListSearchViewModel {
 
     func searchCollections(with searchText: String?) {
 
-        guard let searchText else { return }
+        guard let searchText else {
+            return
+        }
 
-        self.loadingState = .loading
+        guard loadingState != .loading else {
+            return
+        }
 
         resetSearchState()
+
+        self.loadingState = .loading
         currentSearchKeyword = searchText
 
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: currentPageNumber)) { [weak self] result in
@@ -92,11 +100,12 @@ final class MuseumCollectionsListSearchViewModel {
         totalNumberOfObjects = 0
         artObjectViewModels.removeAll()
         imageDownloader.clearCache()
+        loadingState = .idle
     }
 
     private func populateArtObjectViewModels(with artObjects: [ArtObjectsContainer.ArtObject]) {
 
-        let artObjectViewModels = artObjects.map { artObject -> ArtObjectViewModel in
+        let localArtObjectViewModels = artObjects.map { artObject -> ArtObjectViewModel in
 
             let shortDescription: String
 
@@ -109,9 +118,9 @@ final class MuseumCollectionsListSearchViewModel {
             return ArtObjectViewModel(id: artObject.id, title: artObject.title, longTitle: artObject.longTitle, productionPlacesList: artObject.productionPlaces.joined(separator: ", "), webImageURL: artObject.webImage?.url, headerImageURL: artObject.headerImage?.url, makerName: artObject.principalOrFirstMaker, shortDescription: shortDescription) }
 
         if self.artObjectViewModels.isEmpty {
-            self.artObjectViewModels = artObjectViewModels
+            self.artObjectViewModels = localArtObjectViewModels
         } else {
-            self.artObjectViewModels.append(contentsOf: artObjectViewModels)
+            self.artObjectViewModels.append(contentsOf: localArtObjectViewModels)
         }
         self.loadingState = .success(viewModels: self.artObjectViewModels)
 
@@ -124,6 +133,10 @@ final class MuseumCollectionsListSearchViewModel {
 
     func loadNextPage() {
         guard toLoadMoreCollections else {
+            return
+        }
+
+        guard loadingState != .loading else {
             return
         }
 
@@ -155,5 +168,24 @@ extension ArtObjectViewModel: Hashable {
 
     static func ==(lhs: ArtObjectViewModel, rhs: ArtObjectViewModel) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+extension LoadingState: Equatable {
+    static func ==(lhs: LoadingState, rhs: LoadingState) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle):
+            return true
+        case (.loading, .loading):
+            return true
+        case (.emptyResult, .emptyResult):
+            return true
+        case (let .success(lhsViewModels), let .success(rhsViewModels)):
+            return lhsViewModels == rhsViewModels
+        case (let .failure(lhsMessage), let .failure(rhsMessage)):
+            return lhsMessage == rhsMessage
+        default:
+            return false
+        }
     }
 }

@@ -9,8 +9,6 @@ import XCTest
 
 @testable import RijksmuseumCollections
 
-public typealias LoadingState = MuseumCollectionsListSearchViewModel.LoadingState
-
 final class MuseumCollectionsListSearchViewModelTests: XCTestCase {
 
     func testThatMuseumCollectionsListSearchViewModelSetsStateToSuccessOnSuccessfulFetch() {
@@ -27,7 +25,6 @@ final class MuseumCollectionsListSearchViewModelTests: XCTestCase {
         if case let .success(artObjectViewModels) = museumCollectionsListSearchViewModel.loadingState {
             XCTAssertEqual(artObjectViewModels.count, 10)
             if let firstArtObjectViewModel = artObjectViewModels.first {
-                //TODO:
                 XCTAssertEqual(firstArtObjectViewModel.id, "nl-BK-2018-2-163-2")
                 XCTAssertEqual(firstArtObjectViewModel.title, "Paar oorclips van verguld koper")
                 XCTAssertEqual(firstArtObjectViewModel.longTitle, "Paar oorclips van verguld koper, Monet, ca. 1970 - ca. 1980")
@@ -40,35 +37,138 @@ final class MuseumCollectionsListSearchViewModelTests: XCTestCase {
                 XCTFail("Failed to get art object view model from the list. Expected at least one view model")
             }
         } else {
-            XCTFail("Failed to get expected loading state from view model state. Expected loading state. Got \(museumCollectionsListSearchViewModel.loadingState)")
+            XCTFail("Failed to get expected loading state from view model state. Expected success state. Got \(museumCollectionsListSearchViewModel.loadingState)")
         }
         XCTAssertTrue(museumCollectionsListSearchViewModel.toLoadMoreCollections)
     }
 
     func testThatMuseumCollectionsListSearchViewModelSetsStateToFailureOnError() {
+        let networkService = MockRequestHandler()
+        networkService.toFail = true
+        let museumCollectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: networkService)
 
+        XCTAssertEqual(museumCollectionsListSearchViewModel.loadingState, .idle)
+
+        museumCollectionsListSearchViewModel.searchCollections(with: "Monet")
+
+        if case let .failure(errorMessage) = museumCollectionsListSearchViewModel.loadingState {
+            XCTAssertEqual(errorMessage, "Something went wrong while loading a request")
+        } else {
+            XCTFail("Failed to get expected loading state from view model state. Expected failure state. Got \(museumCollectionsListSearchViewModel.loadingState)")
+        }
     }
 
     func testThatMuseumCollectionsListSearchViewModelSetsStateToEmptyOnEmptyResponse() {
+        let networkService = MockRequestHandler()
+        networkService.toSendEmptyResponse = true
+        let museumCollectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: networkService)
+
+        XCTAssertEqual(museumCollectionsListSearchViewModel.loadingState, .idle)
+
+        museumCollectionsListSearchViewModel.searchCollections(with: "Monet")
+
+        if case .emptyResult = museumCollectionsListSearchViewModel.loadingState {
+            //Do nothing. If we came here, that means we successfully passed the test
+        } else {
+            XCTFail("Failed to get expected loading state from view model state. Expected emptyResult state. Got \(museumCollectionsListSearchViewModel.loadingState)")
+        }
+    }
+
+    func testThatViewModelCorrectlyResetsTheSearchState() {
+        let networkService = MockRequestHandler()
+        let museumCollectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: networkService)
+
+        XCTAssertEqual(museumCollectionsListSearchViewModel.loadingState, .idle)
+
+        museumCollectionsListSearchViewModel.searchCollections(with: "Monet")
+
+        XCTAssertTrue(museumCollectionsListSearchViewModel.toLoadMoreCollections)
+
+        museumCollectionsListSearchViewModel.loadNextPage()
+
+        XCTAssertEqual(museumCollectionsListSearchViewModel.currentPageNumber, 2)
+        XCTAssertFalse(museumCollectionsListSearchViewModel.toLoadMoreCollections)
+        XCTAssertEqual(museumCollectionsListSearchViewModel.totalNumberOfObjects, 20)
+        XCTAssertEqual(museumCollectionsListSearchViewModel.artObjectViewModels.count, 20)
+
+        museumCollectionsListSearchViewModel.resetSearchState()
+
+        XCTAssertEqual(museumCollectionsListSearchViewModel.currentPageNumber, 1)
+        XCTAssertTrue(museumCollectionsListSearchViewModel.toLoadMoreCollections)
+        XCTAssertEqual(museumCollectionsListSearchViewModel.totalNumberOfObjects, 0)
+        XCTAssertTrue(museumCollectionsListSearchViewModel.artObjectViewModels.isEmpty)
+    }
+
+    func testThatViewModelCorrectlyDeterminesToLoadNextPage() {
+        let networkService = MockRequestHandler()
+        let museumCollectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: networkService)
+
+        museumCollectionsListSearchViewModel.loadNextPage()
+
+        XCTAssertTrue(museumCollectionsListSearchViewModel.toLoadNextPage(currentCellIndex: 5))
 
     }
-}
 
-extension LoadingState: Equatable {
-    public static func ==(lhs: LoadingState, rhs: LoadingState) -> Bool {
-        switch (lhs, rhs) {
-        case (.idle, .idle):
-            return true
-        case (.loading, .loading):
-            return true
-        case (.emptyResult, .emptyResult):
-            return true
-        case (let .success(lhsViewModels), let .success(rhsViewModels)):
-            return lhsViewModels == rhsViewModels
-        case (let .failure(lhsMessage), let .failure(rhsMessage)):
-            return lhsMessage == rhsMessage
-        default:
-            return false
-        }
+    func testThatViewModelCorrectlyDeterminesToNotLoadNextPage() {
+        let networkService = MockRequestHandler()
+        let museumCollectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: networkService)
+
+        museumCollectionsListSearchViewModel.loadNextPage()
+
+        XCTAssertFalse(museumCollectionsListSearchViewModel.toLoadNextPage(currentCellIndex: 2))
+    }
+
+    func testEqualityOfArtObjectViewModelObjects() {
+        let artObjectViewModelOne = ArtObjectViewModel(id: "100", title: "This title", longTitle: "long title", productionPlacesList: "Amsterdam", webImageURL: nil, headerImageURL: nil, makerName: nil, shortDescription: "Object of value")
+
+        let artObjectViewModelTwo = ArtObjectViewModel(id: "100", title: "This title is short", longTitle: "another long title", productionPlacesList: "Boston", webImageURL: nil, headerImageURL: nil, makerName: nil, shortDescription: "Object of low value")
+
+        XCTAssertTrue(artObjectViewModelOne == artObjectViewModelTwo)
+    }
+
+    func testInequalityOfArtObjectViewModelObjects() {
+        let artObjectViewModelOne = ArtObjectViewModel(id: "100", title: "This title", longTitle: "long title", productionPlacesList: "Amsterdam", webImageURL: nil, headerImageURL: nil, makerName: nil, shortDescription: "Object of value")
+
+        let artObjectViewModelTwo = ArtObjectViewModel(id: "200", title: "This title is short", longTitle: "another long title", productionPlacesList: "Boston", webImageURL: nil, headerImageURL: nil, makerName: nil, shortDescription: "Object of low value")
+
+        XCTAssertFalse(artObjectViewModelOne == artObjectViewModelTwo)
+    }
+
+    func testLoadingStateEquality() {
+
+        let idleStateOne: LoadingState = .idle
+        let idleStateTwo: LoadingState = .idle
+
+        let loadingStateOne: LoadingState = .loading
+        let loadingStateTwo: LoadingState = .loading
+
+        let emptyResultStateOne: LoadingState = .emptyResult
+        let emptyResultStateTwo: LoadingState = .emptyResult
+
+        let successfulLoadStateOne: LoadingState = .success(viewModels: [ArtObjectViewModel(id: "100", title: "This title", longTitle: "long title", productionPlacesList: "Amsterdam", webImageURL: nil, headerImageURL: nil, makerName: nil, shortDescription: "Object of value")])
+
+        let successfulLoadStateTwo: LoadingState = .success(viewModels: [ArtObjectViewModel(id: "100", title: "This title is short", longTitle: "another long title", productionPlacesList: "Boston", webImageURL: nil, headerImageURL: nil, makerName: nil, shortDescription: "Object of low value")])
+
+        let successfulLoadStateThree: LoadingState = .success(viewModels: [ArtObjectViewModel(id: "200", title: "This title is short", longTitle: "another long title", productionPlacesList: "Boston", webImageURL: nil, headerImageURL: nil, makerName: nil, shortDescription: "Object of low value")])
+
+        let failureStateOne: LoadingState = .failure(errorMessage: "Unexpected Error")
+        let failureStateTwo: LoadingState = .failure(errorMessage: "Unexpected Error")
+        let failureStateThree: LoadingState = .failure(errorMessage: "Something went wrong")
+
+        XCTAssertEqual(idleStateOne, idleStateTwo)
+        XCTAssertEqual(loadingStateOne, loadingStateTwo)
+        XCTAssertEqual(emptyResultStateOne, emptyResultStateTwo)
+
+        XCTAssertNotEqual(idleStateOne, loadingStateOne)
+        XCTAssertNotEqual(loadingStateOne, emptyResultStateOne)
+        XCTAssertNotEqual(emptyResultStateOne, successfulLoadStateOne)
+        XCTAssertNotEqual(successfulLoadStateOne, failureStateOne)
+        XCTAssertNotEqual(failureStateOne, idleStateOne)
+
+        XCTAssertEqual(successfulLoadStateOne, successfulLoadStateTwo)
+        XCTAssertNotEqual(successfulLoadStateTwo, successfulLoadStateThree)
+
+        XCTAssertEqual(failureStateOne, failureStateTwo)
+        XCTAssertNotEqual(failureStateTwo, failureStateThree)
     }
 }

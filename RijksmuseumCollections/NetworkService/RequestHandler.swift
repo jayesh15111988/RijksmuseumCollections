@@ -58,7 +58,7 @@ final class RequestHandler: RequestHandling {
                 return
             }
 
-            guard let data = data else {
+            guard let data = data, !data.isEmpty else {
                 completion(.failure(.noData))
                 return
             }

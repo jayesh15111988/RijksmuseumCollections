@@ -15,14 +15,14 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
         static let imageHeight: CGFloat = 200.0
     }
 
-    private let coverImageView: UIImageView = {
+    let coverImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
 
-    private let artObjectTitleLabel: UILabel = {
+    let artObjectTitleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
