@@ -9,7 +9,7 @@ import UIKit
 
 final class ArtObjectCollectionViewSectionHeaderView: UICollectionReusableView {
 
-    private let topTitleLabel: UILabel = {
+    let topTitleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -43,6 +43,11 @@ final class ArtObjectCollectionViewSectionHeaderView: UICollectionReusableView {
 
     func configure(with title: String) {
         topTitleLabel.text = title
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        topTitleLabel.text = nil
     }
 }
 

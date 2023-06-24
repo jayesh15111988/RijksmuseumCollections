@@ -195,20 +195,21 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
             switch loadingState {
             case .idle:
-                self.activityIndicatorView.stopAnimating()
+                break
             case .loading:
                 self.activityIndicatorView.startAnimating()
             case .success(let artObjects):
                 guard self.searchBar.text?.isEmpty == false else { return }
                 self.updateDisplayState(with: !artObjects.isEmpty)
                 self.applySnapshot(with: artObjects)
-                self.activityIndicatorView.stopAnimating()
             case .failure(let errorMessage):
                 self.displayError(with: errorMessage)
-                self.activityIndicatorView.stopAnimating()
             case .emptyResult:
                 self.updateDisplayState(with: false)
                 self.userInfoLabel.text = Constants.emptyArtObjectsStateInfoMessage
+            }
+
+            if loadingState != .loading {
                 self.activityIndicatorView.stopAnimating()
             }
         }.store(in: &subscriptions)
