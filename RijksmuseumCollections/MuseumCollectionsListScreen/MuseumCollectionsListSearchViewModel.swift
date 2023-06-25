@@ -70,13 +70,13 @@ final class MuseumCollectionsListSearchViewModel {
 
         resetSearchState()
 
-        self.loadingState = .loading
         currentSearchKeyword = searchText
 
         loadItems(with: searchText, pageNumber: currentPageNumber)
     }
 
     private func loadItems(with searchText: String, pageNumber: Int) {
+        self.loadingState = .loading
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: pageNumber)) { [weak self] result in
 
             guard let self else { return }
@@ -151,7 +151,6 @@ final class MuseumCollectionsListSearchViewModel {
             return
         }
 
-        self.loadingState = .loading
         currentPageNumber += 1
 
         loadItems(with: currentSearchKeyword, pageNumber: currentPageNumber)
