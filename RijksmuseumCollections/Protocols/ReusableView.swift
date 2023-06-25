@@ -7,9 +7,8 @@
 
 import Foundation
 
-/// A protocol for reusable views such as Table view cells to provide
+/// A protocol for reusable views such as Table/Collection view cells to provide
 /// reuseIdentifier for cell reuse
 protocol ReusableView {
     static var reuseIdentifier: String { get }
 }
-

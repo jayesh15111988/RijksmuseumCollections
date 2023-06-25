@@ -7,10 +7,11 @@
 
 import UIKit
 
+// A coordinator to manage navigation and setting up the view controller
+// stack when app starts the first time
 final class AppCoordinator: Coordinator {
 
-    let window: UIWindow
-
+    private let window: UIWindow
     var rootViewController: UINavigationController
 
     init(window: UIWindow) {

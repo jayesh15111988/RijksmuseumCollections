@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A Decodable struct to encode art objects info downloaded from endpoint
 struct ArtObjectsContainer: Decodable {
     let artObjects: [ArtObject]
     let count: Int

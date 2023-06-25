@@ -13,6 +13,8 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
 
     enum Constants {
         static let imageHeight: CGFloat = 200.0
+        static let titleFont = UIFont.systemFont(ofSize: 16)
+        static let horizontalDividerHeight: CGFloat = 1.0
     }
 
     let coverImageView: UIImageView = {
@@ -27,8 +29,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = Constants.titleFont
         label.accessibilityIdentifier = "artObjectCell.artObjectTitle"
         return label
     }()
@@ -47,6 +48,23 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
         layoutViews()
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configure(with viewModel: ArtObjectViewModel) {
+        artObjectTitleLabel.text = viewModel.shortDescription
+
+        self.coverImageView.downloadImage(with: viewModel.headerImageURL, placeholderImage: Images.placeholder)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        coverImageView.image = nil
+        artObjectTitleLabel.text = nil
+    }
+
+    //MARK: Private methods
     private func setupViews() {
         contentView.clipsToBounds = true
         coverImageView.clipsToBounds = true
@@ -56,6 +74,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
     }
 
     private func layoutViews() {
+
         NSLayoutConstraint.activate([
             coverImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             coverImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -74,25 +93,9 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
             horizontalDivider.topAnchor.constraint(equalTo: artObjectTitleLabel.bottomAnchor, constant: Style.Padding.smallVertical),
             horizontalDivider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Style.Padding.smallHorizontal),
             horizontalDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Style.Padding.smallHorizontal),
-            horizontalDivider.heightAnchor.constraint(equalToConstant: 1.0),
+            horizontalDivider.heightAnchor.constraint(equalToConstant: Constants.horizontalDividerHeight),
             horizontalDivider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Style.Padding.smallVertical)
         ])
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func configure(with viewModel: ArtObjectViewModel) {
-        artObjectTitleLabel.text = viewModel.shortDescription
-
-        self.coverImageView.downloadImage(with: viewModel.headerImageURL, placeholderImage: Images.placeholder)
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        coverImageView.image = nil
-        artObjectTitleLabel.text = nil
     }
 }
 

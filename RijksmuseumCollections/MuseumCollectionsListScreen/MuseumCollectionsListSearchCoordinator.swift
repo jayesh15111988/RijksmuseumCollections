@@ -7,6 +7,7 @@
 
 import UIKit
 
+// A coordinator for managing screen for MuseumCollectionsListSearch controller
 final class MuseumCollectionsListSearchCoordinator: Coordinator {
 
     var rootViewController: UINavigationController

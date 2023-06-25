@@ -20,11 +20,13 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     private lazy var dataSource = setupDatasource()
 
     private enum Constants {
+
         static let emptySearchKeywordStateInfoMessage = "Please start typing keyword in the search box to view the list of collections in Rijksmuseum"
 
         static let emptyArtObjectsStateInfoMessage = "No art objects found matching current search keyword. Please try searching with another keyword"
 
-        static let fixedArtObjectImageHeight: CGFloat = 200.0
+        static let artObjectImageHeight: CGFloat = 200.0
+        static let toolbarHeight: CGFloat = 44.0
     }
 
     init(alertDisplayUtility: AlertDisplayable = AlertDisplayUtility(), viewModel: MuseumCollectionsListSearchViewModel) {
@@ -83,7 +85,6 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.accessibilityIdentifier = "objectsListScreen.navigationBarTitle"
         setupViews()
         layoutViews()
         setupSubscriptions()
@@ -94,16 +95,17 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: Private methods
     private func setupViews() {
+        navigationController?.navigationBar.accessibilityIdentifier = "objectsListScreen.navigationBarTitle"
         view.backgroundColor = .white
         title = viewModel.title
 
         updateDisplayState(with: false)
+        userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
 
         collectionView.delegate = self
         searchBar.delegate = self
-
-        userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
 
         registerViews()
 
@@ -120,9 +122,9 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
         view.addSubview(searchBar)
         view.addSubview(userInfoLabelParentView)
-        userInfoLabelParentView.addSubview(userInfoLabel)
         view.addSubview(collectionView)
         view.addSubview(activityIndicatorView)
+        userInfoLabelParentView.addSubview(userInfoLabel)
     }
 
     private func createLayout() -> UICollectionViewLayout {
@@ -152,7 +154,6 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
     private func layoutViews() {
 
-        // Constraints for searchBar
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -188,7 +189,11 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
     private func setupSubscriptions() {
 
-        viewModel.$loadingState.dropFirst().receive(on: DispatchQueue.main).sink { [weak self] loadingState in
+        viewModel
+            .$loadingState
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] loadingState in
 
             guard let self else { return }
 
@@ -245,7 +250,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: ArtObjectCollectionViewCell.reuseIdentifier,
                     for: indexPath) as? ArtObjectCollectionViewCell else {
-                    return nil
+                    fatalError("Failed to get expected cell type from collection view. Expected ArtObjectCollectionViewCell")
                 }
                 cell.accessibilityIdentifier = "objectsListScreen.artObjectCell.\(indexPath.row)"
                 cell.configure(with: artObjectViewModel)
@@ -255,7 +260,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     }
 
     private func setupToolbar() {
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: view.frame.width, height: 44))
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
 
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
@@ -268,16 +273,28 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     }
 
     @objc private func doneButtonPressed() {
+        dismissKeyboard()
+    }
+
+    private func dismissKeyboard() {
         self.searchBar.searchTextField.resignFirstResponder()
     }
 }
 
+//MARK: UISearchBarDelegate methods
 extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
+
+    /// A delegate method that gets called after user taps Search button
+    /// - Parameter searchBar: An instance of UISearchBar on which this method is called
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.searchBar.searchTextField.resignFirstResponder()
-        self.viewModel.searchCollections(with: searchBar.text)
+        dismissKeyboard()
+        viewModel.searchCollections(with: searchBar.text)
     }
 
+    /// A delegate method that gets called when text in the UISearchBar changes
+    /// - Parameters:
+    ///   - searchBar: An instance of UISearchBar on which this method is called
+    ///   - searchText: A text typed into UISearchBar field
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             updateDisplayState(with: false)
@@ -290,7 +307,7 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
 extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let artObjectViewModel = dataSource.itemIdentifier(for: indexPath) else {
-            return
+            fatalError("Can't find the item at \(indexPath.row). Expected valid item at that index path in the collection view")
         }
         viewModel.navigateToDetailsScreen(with: artObjectViewModel)
     }
@@ -299,16 +316,5 @@ extension MuseumCollectionsListSearchViewController: UICollectionViewDelegate {
         if viewModel.toLoadNextPage(currentCellIndex: indexPath.row) {
             viewModel.loadNextPage()
         }
-    }
-}
-
-//Taken from: https://stackoverflow.com/questions/30450434/figure-out-size-of-uilabel-based-on-string-in-swift
-extension String {
-    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
-        let constraintInRect = CGSize(width: width, height: .greatestFiniteMagnitude)
-
-        let boundingBox = self.boundingRect(with: constraintInRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
-
-        return ceil(boundingBox.height)
     }
 }

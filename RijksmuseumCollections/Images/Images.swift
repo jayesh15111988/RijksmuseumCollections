@@ -7,6 +7,7 @@
 
 import UIKit
 
+// An enum to retrieve all the image assets in the app
 enum Images {
     static let placeholder = UIImage(named: "placeholder")
 }

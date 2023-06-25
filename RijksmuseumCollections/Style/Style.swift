@@ -7,7 +7,7 @@
 
 import UIKit
 
-// A styles enum to store all the styles related code
+// A styles enum to store all the styles such as padding, spacing, corner radius etc.
 enum Style {
 
     //MARK: Paddings

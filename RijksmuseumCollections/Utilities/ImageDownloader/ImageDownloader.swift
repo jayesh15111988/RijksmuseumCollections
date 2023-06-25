@@ -36,7 +36,6 @@ final class ImageDownloader: ImageDownloadable {
      - Parameter imageUrlString: The remote URL to download images from
      - Parameter completionHandler: A completion handler which returns two parameters. First one is an image which may or may
      not be cached and second one is a bool to indicate whether we returned the cached version or not
-     - Parameter placeholderImage: Placeholder image to display as we're downloading them from the server
      */
     func downloadImage(with imageUrlString: String?,
                        completionHandler: @escaping (UIImage?, Bool, String?) -> Void) {
@@ -92,38 +91,7 @@ final class ImageDownloader: ImageDownloadable {
         }
     }
 
-    //MARK: Private methods
-    private func executeClosureOnMainThread(with completionHandler: @escaping (UIImage?, Bool, String?) -> Void, image: UIImage?, isCached: Bool, imageURLString: String?) {
-        DispatchQueue.main.async {
-            completionHandler(image, isCached, imageURLString)
-        }
-    }
-
-    private func cancelPreviousTask(with urlString: String?) {
-        if let urlString = urlString, let task = getDataTaskFrom(urlString: urlString) {
-            task.cancel()
-            // Since Swift dictionaries are not thread-safe, we have to explicitly set this barrier to avoid fatal error when it is accessed by multiple threads simultaneously
-            _ = serialQueueForDataTasks.sync(flags: .barrier) {
-                imagesDownloadTasks.removeValue(forKey: urlString)
-            }
-        }
-    }
-
-    private func getCachedImageFrom(urlString: String) -> UIImage? {
-        // Reading from the dictionary should happen in the thread-safe manner.
-        serialQueueForImages.sync {
-            return cachedImages[urlString]
-        }
-    }
-
-    private func getDataTaskFrom(urlString: String) -> URLSessionTask? {
-
-        // Reading from the dictionary should happen in the thread-safe manner.
-        serialQueueForDataTasks.sync {
-            return imagesDownloadTasks[urlString]
-        }
-    }
-
+    /// A method to clear all the cached images in the app
     func clearCache() {
         self.serialQueueForImages.sync(flags: .barrier) {
             self.cachedImages.removeAll()
@@ -139,9 +107,50 @@ final class ImageDownloader: ImageDownloadable {
             imagesDownloadTasks.removeAll()
         }
     }
+
+    //MARK: Private methods
+
+    /// A method to force execute the code on main thread
+    /// - Parameters:
+    ///   - completionHandler: A completion handler closure that gets executed after completin of async operation
+    ///   - image: A downloaded image to send back
+    ///   - isCached: Boolean flag indicating whether image was cached or not
+    ///   - imageURLString: An URL of image location
+    private func executeClosureOnMainThread(with completionHandler: @escaping (UIImage?, Bool, String?) -> Void, image: UIImage?, isCached: Bool, imageURLString: String?) {
+        DispatchQueue.main.async {
+            completionHandler(image, isCached, imageURLString)
+        }
+    }
+
+    /// A method to get cached image from local storage
+    /// - Parameter urlString: An image URL
+    /// - Returns: An image if cached, otherwise nil
+    private func getCachedImageFrom(urlString: String) -> UIImage? {
+        // Reading from the dictionary should happen in the thread-safe manner.
+        serialQueueForImages.sync {
+            return cachedImages[urlString]
+        }
+    }
+
+    /// A method to get data task from URL from dictionary that maps URL into URLSessionTask object
+    /// - Parameter urlString: An image URL
+    /// - Returns: An URLSessionTask if one exists, otherwise nil
+    private func getDataTaskFrom(urlString: String) -> URLSessionTask? {
+
+        // Reading from the dictionary should happen in the thread-safe manner.
+        serialQueueForDataTasks.sync {
+            return imagesDownloadTasks[urlString]
+        }
+    }
 }
 
 extension UIImageView {
+
+    /// An extension method on UIImageView to download image from URL and set it to UIImageView
+    /// - Parameters:
+    ///   - imageUrlString: An image URL
+    ///   - placeholderImage: A placeholder image to show while image download is in progress or image could not be downloaded
+    ///   - imageDownloader: An instance of image downloader to download image from URL
     func downloadImage(with imageUrlString: String?,
                        placeholderImage: UIImage?,
                        imageDownloader: ImageDownloadable = ImageDownloader.shared) {

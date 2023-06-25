@@ -14,13 +14,14 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
 
     private enum Constants {
         static let imageHeight: CGFloat = 300
+        static let stackViewVerticalSpacing: CGFloat = 10
     }
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = Constants.stackViewVerticalSpacing
         return stackView
     }()
 
@@ -79,9 +80,20 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
         self.artObjectImageView.downloadImage(with: viewModel.collectionImageURL, placeholderImage: Images.placeholder)
     }
 
+    init(viewModel: MuseumCollectionsDetailsViewModel, imageDownloader: ImageDownloadable = ImageDownloader.shared) {
+        self.viewModel = viewModel
+        self.imageDownloader = imageDownloader
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    //MARK: Private methods
     private func setupViews() {
-        self.title = viewModel.shortTitle
-        self.view.backgroundColor = .white
+        title = viewModel.shortTitle
+        view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
     }
@@ -103,22 +115,14 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
         ])
     }
 
-    init(viewModel: MuseumCollectionsDetailsViewModel, imageDownloader: ImageDownloadable = ImageDownloader.shared) {
-        self.viewModel = viewModel
-        self.imageDownloader = imageDownloader
-        super.init(nibName: nil, bundle: nil)
-    }
-
+    /// A method to get label with provided text on it
+    /// - Parameter text: A text to display on UILabel instance
+    /// - Returns: An UILabel instance with passed text set on it
     private func getLabelWith(text: String) -> UILabel {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.text = text
-        label.textAlignment = .left
         return label
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 
+// A protocol to manage routing and navigation between screens
 protocol Coordinator: AnyObject {
     var rootViewController: UINavigationController { get }
 

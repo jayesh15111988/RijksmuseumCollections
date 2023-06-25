@@ -7,13 +7,16 @@
 
 import Foundation
 
+/// An enum to encode all the operations associated with specific endpoint
 enum APIRoute {
     case getCollectionsList(searchKeyword: String, pageNumber: Int)
 
+    // Base URL on which all the URL requests are based
     private var baseURLString: String { "https://www.rijksmuseum.nl/api/" }
 
     private var defaultCulture: String { "nl" }
 
+    // API secret key to get server data
     private var key: String { "0fiuZFh4" }
 
     private var url: URL? {
@@ -34,6 +37,8 @@ enum APIRoute {
         }
     }
 
+    /// A method to convert given APIRoute case into URLRequest object
+    /// - Returns: An instance of URLRequest
     func asRequest() -> URLRequest {
         guard let url = url else {
             preconditionFailure("Missing URL for route: \(self)")

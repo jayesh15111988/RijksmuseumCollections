@@ -10,4 +10,3 @@ import Foundation
 protocol RequestHandling {
     func request<T: Decodable>(type: T.Type, route: APIRoute, completion: @escaping (Result<T, DataLoadError>) -> Void)
 }
-

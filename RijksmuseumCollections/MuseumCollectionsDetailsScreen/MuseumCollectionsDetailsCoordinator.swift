@@ -7,10 +7,11 @@
 
 import UIKit
 
+// A coordinator for managing screen for MuseumCollectionsDetailsViewController controller
 final class MuseumCollectionsDetailsCoordinator: Coordinator {
 
     var rootViewController: UINavigationController
-    let viewModel: ArtObjectViewModel
+    private let viewModel: ArtObjectViewModel
 
     init(navController: UINavigationController, viewModel: ArtObjectViewModel) {
         self.rootViewController = navController

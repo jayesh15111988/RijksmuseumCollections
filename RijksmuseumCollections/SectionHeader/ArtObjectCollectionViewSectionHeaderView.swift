@@ -14,7 +14,6 @@ final class ArtObjectCollectionViewSectionHeaderView: UICollectionReusableView {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.textAlignment = .left
         return label
     }()
 
@@ -28,6 +27,16 @@ final class ArtObjectCollectionViewSectionHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func configure(with title: String) {
+        topTitleLabel.text = title
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        topTitleLabel.text = nil
+    }
+
+    //MARK: Private methods
     private func setupViews() {
         backgroundColor = UIColor(white: 0.8, alpha: 0.8)
         addSubview(topTitleLabel)
@@ -40,15 +49,6 @@ final class ArtObjectCollectionViewSectionHeaderView: UICollectionReusableView {
             topTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Style.Padding.smallVertical),
             topTitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Style.Padding.smallVertical)
         ])
-    }
-
-    func configure(with title: String) {
-        topTitleLabel.text = title
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        topTitleLabel.text = nil
     }
 }
 
