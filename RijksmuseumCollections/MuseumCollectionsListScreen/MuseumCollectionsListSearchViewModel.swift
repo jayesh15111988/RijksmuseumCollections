@@ -76,7 +76,7 @@ final class MuseumCollectionsListSearchViewModel {
         loadItems(with: searchText, pageNumber: currentPageNumber)
     }
 
-    func loadItems(with searchText: String, pageNumber: Int) {
+    private func loadItems(with searchText: String, pageNumber: Int) {
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: pageNumber)) { [weak self] result in
 
             guard let self else { return }

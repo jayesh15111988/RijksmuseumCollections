@@ -171,4 +171,33 @@ final class MuseumCollectionsListSearchViewModelTests: XCTestCase {
         XCTAssertEqual(failureStateOne, failureStateTwo)
         XCTAssertNotEqual(failureStateTwo, failureStateThree)
     }
+
+    func testThatViewModelCanSendSuccessiveRequestsToLoadNextPage() {
+        let networkService = MockRequestHandler()
+        let museumCollectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: networkService)
+
+        museumCollectionsListSearchViewModel.searchCollections(with: "Monet")
+
+        XCTAssertEqual(networkService.lastRequestedURL, "https://www.rijksmuseum.nl/api/nl/collection?key=0fiuZFh4&q=Monet&p=1")
+
+        museumCollectionsListSearchViewModel.loadNextPage()
+
+        XCTAssertEqual(networkService.lastRequestedURL, "https://www.rijksmuseum.nl/api/nl/collection?key=0fiuZFh4&q=Monet&p=2")
+    }
+
+    func testThatViewModelCanRetryPreviousRequest() {
+        let networkService = MockRequestHandler()
+        let museumCollectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: networkService)
+
+        museumCollectionsListSearchViewModel.searchCollections(with: "Monet")
+
+        XCTAssertEqual(networkService.lastRequestedURL, "https://www.rijksmuseum.nl/api/nl/collection?key=0fiuZFh4&q=Monet&p=1")
+
+        museumCollectionsListSearchViewModel.loadNextPage()
+
+        XCTAssertEqual(networkService.lastRequestedURL, "https://www.rijksmuseum.nl/api/nl/collection?key=0fiuZFh4&q=Monet&p=2")
+
+        museumCollectionsListSearchViewModel.retryLastRequest()
+        XCTAssertEqual(networkService.lastRequestedURL, "https://www.rijksmuseum.nl/api/nl/collection?key=0fiuZFh4&q=Monet&p=2")
+    }
 }

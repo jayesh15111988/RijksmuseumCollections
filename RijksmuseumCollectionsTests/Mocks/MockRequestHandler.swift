@@ -14,7 +14,11 @@ class MockRequestHandler: RequestHandling {
     var toFail = false
     var toSendEmptyResponse = false
 
+    var lastRequestedURL: String?
+
     func request<T>(type: T.Type, route: APIRoute, completion: @escaping (Result<T, DataLoadError>) -> Void) where T : Decodable {
+
+        lastRequestedURL = route.asRequest().url?.absoluteString
 
         if toFail {
             completion(.failure(DataLoadError.genericError("Something went wrong while loading a request")))

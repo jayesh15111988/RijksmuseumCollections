@@ -9,24 +9,23 @@ import XCTest
 
 final class RijksmuseumCollectionsHomeScreenUITests: BaseTest {
 
-    var collectionsListSearchScreen: MuseumCollectionsListSearchScreen!
-
     override func setUp() {
         super.setUp()
-        self.collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
     }
 
     func testThatTopNavigationTitleExists() {
+        let collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
         XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Rijksmuseum Collection").exists)
     }
 
     func testInitialState() {
+        let collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
         XCTAssertTrue(collectionsListSearchScreen.searchField(with: "objectsListScreen.searchField").exists)
         XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Please start typing keyword in the search box to view the list of collections in Rijksmuseum").exists)
     }
 
     func testThatUserCanSearchWithKeywordsWithResults() {
-
+        let collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
         collectionsListSearchScreen
             .performSearch(with: "Rembrandt")
 
@@ -43,6 +42,7 @@ final class RijksmuseumCollectionsHomeScreenUITests: BaseTest {
     }
 
     func testThatUserCanSearchWithKeywordsWithNoResults() {
+        let collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
         collectionsListSearchScreen
             .performSearch(with: "adasdfsdfdsfsdfdsf")
 
@@ -51,6 +51,7 @@ final class RijksmuseumCollectionsHomeScreenUITests: BaseTest {
     }
 
     func testThatUserCanClearSearchFieldAndViewInformationMessage() {
+        let collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
         XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Please start typing keyword in the search box to view the list of collections in Rijksmuseum").exists)
 
         collectionsListSearchScreen
