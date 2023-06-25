@@ -57,6 +57,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         view.layer.masksToBounds = true
         view.layer.cornerRadius = Style.cornerRadius
         view.backgroundColor = .lightGray
+        view.accessibilityIdentifier = "objectsListScreen.informationLabelParentView"
         return view
     }()
 

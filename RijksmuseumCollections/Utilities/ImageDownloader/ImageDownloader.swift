@@ -71,20 +71,20 @@ final class ImageDownloader: ImageDownloadable {
                     self.executeClosureOnMainThread(with: completionHandler, image: nil, isCached: false, imageURLString: imageUrlString)
                     return
                 }
-                self.serialQueueForImages.sync(flags: .barrier) {
-                    self.cachedImages[imageUrlString] = image
+                self.serialQueueForImages.sync(flags: .barrier) { [weak self] in
+                    self?.cachedImages[imageUrlString] = image
                 }
 
-                _ = self.serialQueueForDataTasks.sync(flags: .barrier) {
-                    self.imagesDownloadTasks.removeValue(forKey: imageUrlString)
+                _ = self.serialQueueForDataTasks.sync(flags: .barrier) { [weak self] in
+                    self?.imagesDownloadTasks.removeValue(forKey: imageUrlString)
                 }
 
 
                 self.executeClosureOnMainThread(with: completionHandler, image: image, isCached: false, imageURLString: imageUrlString)
             }
             // We want to control the access to no-thread-safe dictionary in case it's being accessed by multiple threads at once
-            self.serialQueueForDataTasks.sync(flags: .barrier) {
-                imagesDownloadTasks[imageUrlString] = task
+            self.serialQueueForDataTasks.sync(flags: .barrier) { [weak self] in
+                self?.imagesDownloadTasks[imageUrlString] = task
             }
 
             task.resume()
@@ -93,8 +93,8 @@ final class ImageDownloader: ImageDownloadable {
 
     /// A method to clear all the cached images in the app
     func clearCache() {
-        self.serialQueueForImages.sync(flags: .barrier) {
-            self.cachedImages.removeAll()
+        self.serialQueueForImages.sync(flags: .barrier) { [weak self] in
+            self?.cachedImages.removeAll()
         }
 
         for (_, downloadTask) in imagesDownloadTasks {
@@ -103,8 +103,8 @@ final class ImageDownloader: ImageDownloadable {
             }
         }
 
-        serialQueueForDataTasks.sync(flags: .barrier) {
-            imagesDownloadTasks.removeAll()
+        serialQueueForDataTasks.sync(flags: .barrier) { [weak self] in
+            self?.imagesDownloadTasks.removeAll()
         }
     }
 
@@ -127,8 +127,8 @@ final class ImageDownloader: ImageDownloadable {
     /// - Returns: An image if cached, otherwise nil
     private func getCachedImageFrom(urlString: String) -> UIImage? {
         // Reading from the dictionary should happen in the thread-safe manner.
-        serialQueueForImages.sync {
-            return cachedImages[urlString]
+        serialQueueForImages.sync { [weak self] in
+            return self?.cachedImages[urlString]
         }
     }
 
@@ -138,8 +138,8 @@ final class ImageDownloader: ImageDownloadable {
     private func getDataTaskFrom(urlString: String) -> URLSessionTask? {
 
         // Reading from the dictionary should happen in the thread-safe manner.
-        serialQueueForDataTasks.sync {
-            return imagesDownloadTasks[urlString]
+        serialQueueForDataTasks.sync { [weak self] in
+            return self?.imagesDownloadTasks[urlString]
         }
     }
 }
@@ -157,8 +157,8 @@ extension UIImageView {
         self.image = placeholderImage
 
         imageDownloader.downloadImage(with: imageUrlString, completionHandler: { [weak self] (image, isCached, urlString) in
-            guard let self, let image else { return }
-            self.image = image
+            guard let image else { return }
+            self?.image = image
         })
     }
 }

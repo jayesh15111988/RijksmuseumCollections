@@ -9,7 +9,7 @@ import Foundation
 
 final class MuseumCollectionsDetailsViewModel {
 
-    var coordinator: MuseumCollectionsDetailsCoordinator?
+    weak var coordinator: MuseumCollectionsDetailsCoordinator?
 
     let collectionImageURL: String?
     let shortTitle: String
