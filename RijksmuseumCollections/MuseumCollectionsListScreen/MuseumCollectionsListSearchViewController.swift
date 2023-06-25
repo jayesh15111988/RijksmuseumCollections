@@ -222,7 +222,14 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     }
 
     private func displayError(with message: String) {
-        self.alertDisplayUtility.showAlert(with: "Error", message: message, actions: [], parentController: self)
+
+        let tryAgainAction = UIAlertAction(title: "Try Again", style: .default) { action in
+            self.viewModel.retryLastRequest()
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+
+        self.alertDisplayUtility.showAlert(with: "Error", message: message, actions: [cancelAction, tryAgainAction], parentController: self)
     }
 
     private func updateDisplayState(with isShowingResultsList: Bool) {

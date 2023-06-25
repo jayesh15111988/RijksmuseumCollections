@@ -73,25 +73,36 @@ final class MuseumCollectionsListSearchViewModel {
         self.loadingState = .loading
         currentSearchKeyword = searchText
 
-        networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: currentPageNumber)) { [weak self] result in
+        loadItems(with: searchText, pageNumber: currentPageNumber)
+    }
+
+    func loadItems(with searchText: String, pageNumber: Int) {
+        networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: pageNumber)) { [weak self] result in
 
             guard let self else { return }
 
             switch result {
             case .success(let artObjectsParentContainer):
 
-                guard artObjectsParentContainer.count != 0 else {
-                    self.loadingState = .emptyResult
-                    return
+                if pageNumber == 1 {
+                    guard artObjectsParentContainer.count != 0 else {
+                        self.loadingState = .emptyResult
+                        return
+                    }
+
+                    self.totalNumberOfObjects = artObjectsParentContainer.count
                 }
 
-                self.totalNumberOfObjects = artObjectsParentContainer.count
                 self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
 
             case .failure(let dataLoadError):
                 self.loadingState = .failure(errorMessage: dataLoadError.errorMessageString())
             }
         }
+    }
+
+    func retryLastRequest() {
+        loadItems(with: currentSearchKeyword, pageNumber: currentPageNumber)
     }
 
     func resetSearchState() {
@@ -143,17 +154,7 @@ final class MuseumCollectionsListSearchViewModel {
         self.loadingState = .loading
         currentPageNumber += 1
 
-        networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: currentSearchKeyword, pageNumber: currentPageNumber)) { [weak self] result in
-
-            guard let self else { return }
-
-            switch result {
-            case .success(let artObjectsParentContainer):
-                self.populateArtObjectViewModels(with: artObjectsParentContainer.artObjects)
-            case .failure(let dataLoadError):
-                self.loadingState = .failure(errorMessage: dataLoadError.errorMessageString())
-            }
-        }
+        loadItems(with: currentSearchKeyword, pageNumber: currentPageNumber)
     }
 
     func navigateToDetailsScreen(with viewModel: ArtObjectViewModel) {
