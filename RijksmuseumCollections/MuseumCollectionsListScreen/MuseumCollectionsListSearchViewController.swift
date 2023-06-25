@@ -36,6 +36,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.searchTextField.accessibilityIdentifier = "objectsListScreen.searchField"
         searchBar.placeholder = "Search Keyword (Tap search to find)"
         return searchBar
     }()
@@ -237,9 +238,9 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: ArtObjectCollectionViewCell.reuseIdentifier,
                     for: indexPath) as? ArtObjectCollectionViewCell else {
-                    //TODO: Add error handling due to nil cell
                     return nil
                 }
+                cell.accessibilityIdentifier = "objectsListScreen.artObjectCell.\(indexPath.row)"
                 cell.configure(with: artObjectViewModel)
                 return cell
             })

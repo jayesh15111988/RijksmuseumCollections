@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		916020D52A483F5C00C46636 /* BaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916020D42A483F5C00C46636 /* BaseTest.swift */; };
+		91AF5FA02A477D56005DEB48 /* MuseumCollectionsListSearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AF5F9F2A477D56005DEB48 /* MuseumCollectionsListSearchScreen.swift */; };
+		91AF5FA22A477D62005DEB48 /* MuseumCollectionsDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AF5FA12A477D62005DEB48 /* MuseumCollectionsDetailsScreen.swift */; };
+		91AF5FA42A477E7A005DEB48 /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AF5FA32A477E7A005DEB48 /* BaseScreen.swift */; };
 		91C2CFAB2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */; };
 		91C2CFAE2A4457FA00AE2152 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFAD2A4457FA00AE2152 /* Style.swift */; };
 		91C2CFB02A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C2CFAF2A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift */; };
@@ -68,6 +72,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		916020D42A483F5C00C46636 /* BaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTest.swift; sourceTree = "<group>"; };
+		91AF5F9F2A477D56005DEB48 /* MuseumCollectionsListSearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchScreen.swift; sourceTree = "<group>"; };
+		91AF5FA12A477D62005DEB48 /* MuseumCollectionsDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsDetailsScreen.swift; sourceTree = "<group>"; };
+		91AF5FA32A477E7A005DEB48 /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
 		91C2CFAA2A44540500AE2152 /* MuseumCollectionsListSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchViewController.swift; sourceTree = "<group>"; };
 		91C2CFAD2A4457FA00AE2152 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		91C2CFAF2A445B0400AE2152 /* MuseumCollectionsListSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumCollectionsListSearchViewModel.swift; sourceTree = "<group>"; };
@@ -140,6 +148,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		91AF5F9E2A477D3E005DEB48 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				91AF5FA32A477E7A005DEB48 /* BaseScreen.swift */,
+				91AF5F9F2A477D56005DEB48 /* MuseumCollectionsListSearchScreen.swift */,
+				91AF5FA12A477D62005DEB48 /* MuseumCollectionsDetailsScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
 		91C2CFAC2A4457E900AE2152 /* Style */ = {
 			isa = PBXGroup;
 			children = (
@@ -364,6 +382,8 @@
 		91EBAFEA2A445103002D9B85 /* RijksmuseumCollectionsUITests */ = {
 			isa = PBXGroup;
 			children = (
+				91AF5F9E2A477D3E005DEB48 /* Screens */,
+				916020D42A483F5C00C46636 /* BaseTest.swift */,
 				91EBAFEB2A445103002D9B85 /* RijksmuseumCollectionsHomeScreenUITests.swift */,
 				91C2D00D2A475C1F00AE2152 /* RijksmuseumCollectionsDetailsScreenUITests.swift */,
 			);
@@ -581,8 +601,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91AF5FA22A477D62005DEB48 /* MuseumCollectionsDetailsScreen.swift in Sources */,
 				91C2D00E2A475C1F00AE2152 /* RijksmuseumCollectionsDetailsScreenUITests.swift in Sources */,
+				91AF5FA02A477D56005DEB48 /* MuseumCollectionsListSearchScreen.swift in Sources */,
 				91EBAFEC2A445103002D9B85 /* RijksmuseumCollectionsHomeScreenUITests.swift in Sources */,
+				916020D52A483F5C00C46636 /* BaseTest.swift in Sources */,
+				91AF5FA42A477E7A005DEB48 /* BaseScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

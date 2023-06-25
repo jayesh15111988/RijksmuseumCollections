@@ -1,5 +1,5 @@
 //
-//  RijksmuseumCollectionsUITests.swift
+//  RijksmuseumCollectionsHomeScreenUITests.swift
 //  RijksmuseumCollectionsUITests
 //
 //  Created by Jayesh Kawli on 6/22/23.
@@ -7,35 +7,59 @@
 
 import XCTest
 
-final class RijksmuseumCollectionsUITests: XCTestCase {
+final class RijksmuseumCollectionsHomeScreenUITests: BaseTest {
 
-//    override func setUpWithError() throws {
-//        // Put setup code here. This method is called before the invocation of each test method in the class.
-//
-//        // In UI tests it is usually best to stop immediately when a failure occurs.
-//        continueAfterFailure = false
-//
-//        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-//    }
-//
-//    override func tearDownWithError() throws {
-//        // Put teardown code here. This method is called after the invocation of each test method in the class.
-//    }
-//
-//    func testExample() throws {
-//        // UI tests must launch the application that they test.
-//        let app = XCUIApplication()
-//        app.launch()
-//
-//        // Use XCTAssert and related functions to verify your tests produce the correct results.
-//    }
-//
-//    func testLaunchPerformance() throws {
-//        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-//            // This measures how long it takes to launch your application.
-//            measure(metrics: [XCTApplicationLaunchMetric()]) {
-//                XCUIApplication().launch()
-//            }
-//        }
-//    }
+    var collectionsListSearchScreen: MuseumCollectionsListSearchScreen!
+
+    override func setUp() {
+        super.setUp()
+        self.collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
+    }
+
+    func testThatTopNavigationTitleExists() {
+        XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Rijksmuseum Collection").exists)
+    }
+
+    func testInitialState() {
+        XCTAssertTrue(collectionsListSearchScreen.searchField(with: "objectsListScreen.searchField").exists)
+        XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Please start typing keyword in the search box to view the list of collections in Rijksmuseum").exists)
+    }
+
+    func testThatUserCanSearchWithKeywordsWithResults() {
+
+        collectionsListSearchScreen
+            .performSearch(with: "Rembrandt")
+
+        XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Collection Items").exists)
+        XCTAssertTrue(collectionsListSearchScreen.cells.count > 0)
+
+        XCTAssertTrue(collectionsListSearchScreen.cell(with: "objectsListScreen.artObjectCell.0").isHittable)
+
+        XCTAssertTrue(collectionsListSearchScreen.coverImageView(for: "objectsListScreen.artObjectCell.0", imageIdentifier: "artObjectCell.coverImage").exists)
+
+        XCTAssertTrue(collectionsListSearchScreen.titleLabel(for: "objectsListScreen.artObjectCell.0", titleIdentifier: "artObjectCell.artObjectTitle").exists)
+
+        XCTAssertTrue(collectionsListSearchScreen.otherElement(for: "objectsListScreen.artObjectCell.0", elementIdentifier: "artObjectCell.horizontalDivider").exists)
+    }
+
+    func testThatUserCanSearchWithKeywordsWithNoResults() {
+        collectionsListSearchScreen
+            .performSearch(with: "adasdfsdfdsfsdfdsf")
+
+        XCTAssertTrue(collectionsListSearchScreen.searchField(with: "objectsListScreen.searchField").exists)
+        XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "No art objects found matching current search keyword. Please try searching with another keyword").exists)     
+    }
+
+    func testThatUserCanClearSearchFieldAndViewInformationMessage() {
+        XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Please start typing keyword in the search box to view the list of collections in Rijksmuseum").exists)
+
+        collectionsListSearchScreen
+            .performSearch(with: "Rembrandt")
+
+        XCTAssertFalse(collectionsListSearchScreen.staticTextElement(with: "Please start typing keyword in the search box to view the list of collections in Rijksmuseum").exists)
+
+        collectionsListSearchScreen.clearSearchField()
+
+        XCTAssertTrue(collectionsListSearchScreen.staticTextElement(with: "Please start typing keyword in the search box to view the list of collections in Rijksmuseum").exists)
+    }
 }

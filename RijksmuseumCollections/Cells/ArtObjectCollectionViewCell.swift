@@ -19,6 +19,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
+        imageView.accessibilityIdentifier = "artObjectCell.coverImage"
         return imageView
     }()
 
@@ -28,6 +29,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
         label.numberOfLines = 0
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16)
+        label.accessibilityIdentifier = "artObjectCell.artObjectTitle"
         return label
     }()
 
@@ -35,6 +37,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .lightGray
+        view.accessibilityIdentifier = "artObjectCell.horizontalDivider"
         return view
     }()
 
