@@ -102,8 +102,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         view.backgroundColor = .white
         title = viewModel.title
 
-        updateDisplayState(with: false)
-        userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
+        updateDisplayState(with: false, message: Constants.emptySearchKeywordStateInfoMessage)
 
         collectionView.delegate = self
         searchBar.delegate = self
@@ -205,13 +204,12 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
                 self.activityIndicatorView.startAnimating()
             case .success(let artObjects):
                 guard self.searchBar.text?.isEmpty == false else { return }
-                self.updateDisplayState(with: !artObjects.isEmpty)
+                self.updateDisplayState(with: true, message: "")
                 self.applySnapshot(with: artObjects)
             case .failure(let errorMessage):
                 self.displayError(with: errorMessage)
             case .emptyResult:
-                self.updateDisplayState(with: false)
-                self.userInfoLabel.text = Constants.emptyArtObjectsStateInfoMessage
+                self.updateDisplayState(with: false, message: Constants.emptyArtObjectsStateInfoMessage)
             }
 
             if loadingState != .loading {
@@ -238,7 +236,14 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         self.alertDisplayUtility.showAlert(with: "Error", message: message, actions: [cancelAction, tryAgainAction], parentController: self)
     }
 
-    private func updateDisplayState(with isShowingResultsList: Bool) {
+    private func updateDisplayState(with isShowingResultsList: Bool, message: String?) {
+
+        if isShowingResultsList {
+            userInfoLabel.text = nil
+        } else {
+            userInfoLabel.text = message
+        }
+
         self.userInfoLabelParentView.isHidden = isShowingResultsList
         self.collectionView.isHidden = !isShowingResultsList
     }
@@ -298,8 +303,7 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
     ///   - searchText: A text typed into UISearchBar field
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
-            updateDisplayState(with: false)
-            userInfoLabel.text = Constants.emptySearchKeywordStateInfoMessage
+            updateDisplayState(with: false, message: Constants.emptySearchKeywordStateInfoMessage)
             viewModel.resetSearchState()
         }
     }
