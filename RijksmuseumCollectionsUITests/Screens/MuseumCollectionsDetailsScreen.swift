@@ -13,4 +13,6 @@ final class MuseumCollectionsDetailsScreen: BaseScreen {
     lazy var longTitle = staticTexts["objectsDetailScreen.longTitle"]
     lazy var productionPlaces = staticTexts["objectsDetailScreen.productionPlaces"]
     lazy var artistLabel = staticTexts["objectsDetailScreen.artistLabel"]
+
+    // No actions are needed on this page
 }

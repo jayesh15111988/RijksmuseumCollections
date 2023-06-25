@@ -12,7 +12,7 @@ import XCTest
 final class ReuseIdentifierGeneratorTests: XCTestCase {
 
     func testThatReusableViewCorrectlyGeneratesReuseIdentifier() {
-        XCTAssertEqual(ArtObjectCollectionViewCell.reuseIdentifier, "ArtObjectCollectionViewCell")
-        XCTAssertEqual(ArtObjectCollectionViewSectionHeaderView.reuseIdentifier, "ArtObjectCollectionViewSectionHeaderView")
+        XCTAssertEqual(ArtObjectCollectionViewCell.reuseIdentifier, "ArtObjectCollectionViewCell", "The reuseIdentifier of ArtObjectCollectionViewCell is incorrect")
+        XCTAssertEqual(ArtObjectCollectionViewSectionHeaderView.reuseIdentifier, "ArtObjectCollectionViewSectionHeaderView", "The reuseIdentifier of ArtObjectCollectionViewSectionHeaderView is incorrect")
     }
 }

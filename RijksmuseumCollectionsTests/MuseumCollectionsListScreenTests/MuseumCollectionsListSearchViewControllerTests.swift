@@ -34,8 +34,8 @@ final class MuseumCollectionsListSearchViewControllerTests: XCTestCase {
 
         DispatchQueue.main.async {
             if case .success = museumCollectionsListSearchViewModel.loadingState {
-                XCTAssertTrue(museumCollectionsListSearchViewController.userInfoLabelParentView.isHidden)
-                XCTAssertFalse(museumCollectionsListSearchViewController.collectionView.isHidden)
+                XCTAssertTrue(museumCollectionsListSearchViewController.userInfoLabelParentView.isHidden, "userInfoLabelParentView view on MuseumCollectionsListSearchViewController must be hidden")
+                XCTAssertFalse(museumCollectionsListSearchViewController.collectionView.isHidden, "collectionView view on MuseumCollectionsListSearchViewController must be visible")
                 expectation.fulfill()
             }
         }
@@ -59,8 +59,8 @@ final class MuseumCollectionsListSearchViewControllerTests: XCTestCase {
 
         DispatchQueue.main.async {
             if case .failure = museumCollectionsListSearchViewModel.loadingState {
-                XCTAssertEqual(self.alertDisplayableUtility.shownTitle, "Error")
-                XCTAssertEqual(self.alertDisplayableUtility.shownMessage, "Something went wrong while loading a request")
+                XCTAssertEqual(self.alertDisplayableUtility.shownTitle, "Error", "The shown error message should have the title as 'Error'")
+                XCTAssertEqual(self.alertDisplayableUtility.shownMessage, "Something went wrong while loading a request", "The shown error message should have the body as 'Something went wrong while loading a request'")
                 expectation.fulfill()
             }
         }
@@ -85,9 +85,9 @@ final class MuseumCollectionsListSearchViewControllerTests: XCTestCase {
 
         DispatchQueue.main.async {
             if case .emptyResult = museumCollectionsListSearchViewModel.loadingState {
-                XCTAssertEqual(museumCollectionsListSearchViewController.userInfoLabel.text, "No art objects found matching current search keyword. Please try searching with another keyword")
-                XCTAssertFalse(museumCollectionsListSearchViewController.userInfoLabelParentView.isHidden)
-                XCTAssertTrue(museumCollectionsListSearchViewController.collectionView.isHidden)
+                XCTAssertEqual(museumCollectionsListSearchViewController.userInfoLabel.text, "No art objects found matching current search keyword. Please try searching with another keyword", "The text on userInfoLabel label on MuseumCollectionsListSearchViewController is incorrect")
+                XCTAssertFalse(museumCollectionsListSearchViewController.userInfoLabelParentView.isHidden, "userInfoLabelParentView view on MuseumCollectionsListSearchViewController must be visible")
+                XCTAssertTrue(museumCollectionsListSearchViewController.collectionView.isHidden, "collectionView view on MuseumCollectionsListSearchViewController must be hidden")
                 expectation.fulfill()
             }
         }
@@ -106,8 +106,8 @@ final class MuseumCollectionsListSearchViewControllerTests: XCTestCase {
         _ = museumCollectionsListSearchViewController.view
 
         museumCollectionsListSearchViewController.searchBar(museumCollectionsListSearchViewController.searchBar, textDidChange: "")
-        XCTAssertEqual(museumCollectionsListSearchViewController.userInfoLabel.text, "Please start typing keyword in the search box to view the list of collections in Rijksmuseum")
-        XCTAssertFalse(museumCollectionsListSearchViewController.userInfoLabelParentView.isHidden)
-        XCTAssertTrue(museumCollectionsListSearchViewController.collectionView.isHidden)
+        XCTAssertEqual(museumCollectionsListSearchViewController.userInfoLabel.text, "Please start typing keyword in the search box to view the list of collections in Rijksmuseum", "The text on userInfoLabel label on MuseumCollectionsListSearchViewController is incorrect")
+        XCTAssertFalse(museumCollectionsListSearchViewController.userInfoLabelParentView.isHidden, "userInfoLabelParentView view on MuseumCollectionsListSearchViewController must be visible")
+        XCTAssertTrue(museumCollectionsListSearchViewController.collectionView.isHidden, "collectionView view on MuseumCollectionsListSearchViewController must be hidden")
     }
 }

@@ -18,12 +18,12 @@ final class ArtObjectCollectionViewCellTests: XCTestCase {
         let cell = ArtObjectCollectionViewCell(frame: .zero)
         cell.configure(with: artObjectViewModel)
 
-        XCTAssertEqual(cell.artObjectTitleLabel.text, "This art was created in 2nd century BC")
-        XCTAssertNotNil(cell.coverImageView.image)
+        XCTAssertEqual(cell.artObjectTitleLabel.text, "This art was created in 2nd century BC", "The title text on ArtObjectCollectionViewCell for given art object view model is incorrect")
+        XCTAssertNotNil(cell.coverImageView.image, "The cover image on ArtObjectCollectionViewCell is nil")
 
         cell.prepareForReuse()
-        XCTAssertNil(cell.artObjectTitleLabel.text)
-        XCTAssertNil(cell.coverImageView.image)
+        XCTAssertNil(cell.artObjectTitleLabel.text, "The title label on ArtObjectCollectionViewCell is not nil after preparing cell to reuse")
+        XCTAssertNil(cell.coverImageView.image, "The cover image on ArtObjectCollectionViewCell is not nil after preparing cell to reuse")
     }
 
 }

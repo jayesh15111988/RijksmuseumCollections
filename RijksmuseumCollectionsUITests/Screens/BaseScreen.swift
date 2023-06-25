@@ -7,6 +7,8 @@
 
 import XCTest
 
+// A base screen from which all the other screen will inherit
+// Used to house most commonly used properties and methods
 class BaseScreen {
 
     let app = XCUIApplication()

@@ -23,10 +23,10 @@ final class RijksmuseumCollectionsDetailsScreenUITests: BaseTest {
 
         let museumCollectionsDetailsScreen = MuseumCollectionsDetailsScreen()
 
-        XCTAssertTrue(museumCollectionsDetailsScreen.navigationTitle.exists)
-        XCTAssertTrue(museumCollectionsDetailsScreen.webImageView.exists)
-        XCTAssertTrue(museumCollectionsDetailsScreen.longTitle.exists)
-        XCTAssertTrue(museumCollectionsDetailsScreen.productionPlaces.exists)
-        XCTAssertTrue(museumCollectionsDetailsScreen.artistLabel.exists)
+        XCTAssertTrue(museumCollectionsDetailsScreen.navigationTitle.exists, "App should display navigation title for details screen")
+        XCTAssertTrue(museumCollectionsDetailsScreen.webImageView.exists, "Details screen should have image view visible")
+        XCTAssertTrue(museumCollectionsDetailsScreen.longTitle.exists, "Details screen should have long title visible")
+        XCTAssertTrue(museumCollectionsDetailsScreen.productionPlaces.exists, "Details screen should have production places view visible")
+        XCTAssertTrue(museumCollectionsDetailsScreen.artistLabel.exists, "Details screen should have artist label visible")
     }
 }

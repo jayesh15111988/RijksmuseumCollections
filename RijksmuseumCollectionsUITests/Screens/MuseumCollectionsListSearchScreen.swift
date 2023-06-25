@@ -8,6 +8,7 @@
 import Foundation
 
 final class MuseumCollectionsListSearchScreen: BaseScreen {
+
     private lazy var searchField = searchFields["objectsListScreen.searchField"]
     private lazy var clearTextButton = buttons["Clear text"]
     private lazy var searchButton = buttons["Search"]

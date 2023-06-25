@@ -99,7 +99,7 @@ final class RequestHandlerTests: XCTestCase {
             URL(string: urlWithEmptyData): (nil, Data(), validResponse)
         ]
 
-        let expectation = XCTestExpectation(description: "Successful JSON to model conversion while loading valid data from API")
+        let expectation = XCTestExpectation(description: "Successful JSON to model conversion while loading empty data from API")
 
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: "Picasso", pageNumber: 2)) { result in
             if case .failure(.noData) = result {
@@ -114,12 +114,10 @@ final class RequestHandlerTests: XCTestCase {
     }
 
     // MARK: Private methods
-
     private func setupURLProtocolMock() {
         let sessionConfiguration = URLSessionConfiguration.ephemeral
         sessionConfiguration.protocolClasses = [URLProtocolMock.self]
         mockSession = URLSession(configuration: sessionConfiguration)
     }
-
 }
 
