@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// A header for each collection view section section
 final class ArtObjectCollectionViewSectionHeaderView: UICollectionReusableView {
 
     let topTitleLabel: UILabel = {

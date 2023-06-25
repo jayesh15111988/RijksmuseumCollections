@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MuseumCollectionsDetailsScreen: BaseScreen {
+final class MuseumCollectionsDetailsScreen: BaseScreen {
     lazy var navigationTitle = navigationBars["objectsListScreen.navigationBarTitle"]
     lazy var webImageView = images["objectsDetailScreen.webImage"]
     lazy var longTitle = staticTexts["objectsDetailScreen.longTitle"]

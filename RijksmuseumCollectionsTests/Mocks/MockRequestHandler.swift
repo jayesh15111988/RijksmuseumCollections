@@ -9,7 +9,7 @@ import Foundation
 
 @testable import RijksmuseumCollections
 
-class MockRequestHandler: RequestHandling {
+final class MockRequestHandler: RequestHandling {
 
     var toFail = false
     var toSendEmptyResponse = false

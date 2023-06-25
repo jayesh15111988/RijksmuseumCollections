@@ -8,7 +8,7 @@
 import Foundation
 
 // Referenced from: https://forums.raywenderlich.com/t/chapter-8-init-deprecated-in-ios-13/102050/6
-class URLProtocolMock: URLProtocol {
+final class URLProtocolMock: URLProtocol {
     static var mockURLs = [URL?: (error: Error?, data: Data?, response: HTTPURLResponse?)]()
 
     override class func canInit(with request: URLRequest) -> Bool {
