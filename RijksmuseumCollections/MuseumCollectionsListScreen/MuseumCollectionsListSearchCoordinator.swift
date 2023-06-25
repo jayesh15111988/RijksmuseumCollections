@@ -16,7 +16,6 @@ final class MuseumCollectionsListSearchCoordinator: Coordinator {
     }
 
     func start() {
-
         let collectionsListSearchViewModel = MuseumCollectionsListSearchViewModel(networkService: RequestHandler())
         let collectionsListSearchViewController = MuseumCollectionsListSearchViewController(alertDisplayUtility: AlertDisplayUtility(), viewModel: collectionsListSearchViewModel)
 

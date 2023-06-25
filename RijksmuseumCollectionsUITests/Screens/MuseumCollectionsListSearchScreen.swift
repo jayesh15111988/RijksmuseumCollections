@@ -29,4 +29,8 @@ class MuseumCollectionsListSearchScreen: BaseScreen {
         searchButton.tap()
         return self
     }
+
+    func tapCell(with identifier: String) {
+        self.cell(with: identifier).tap()
+    }
 }

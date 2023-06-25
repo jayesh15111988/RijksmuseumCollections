@@ -14,6 +14,19 @@ final class RijksmuseumCollectionsDetailsScreenUITests: BaseTest {
     }
 
     func testThatUserCanLandOnAndVerifyAllInformationOnDetailsPage() {
-        
+
+        let collectionsListSearchScreen = MuseumCollectionsListSearchScreen()
+
+        collectionsListSearchScreen
+            .performSearch(with: "Picasso")
+            .tapCell(with: "objectsListScreen.artObjectCell.0")
+
+        let museumCollectionsDetailsScreen = MuseumCollectionsDetailsScreen()
+
+        XCTAssertTrue(museumCollectionsDetailsScreen.navigationTitle.exists)
+        XCTAssertTrue(museumCollectionsDetailsScreen.webImageView.exists)
+        XCTAssertTrue(museumCollectionsDetailsScreen.longTitle.exists)
+        XCTAssertTrue(museumCollectionsDetailsScreen.productionPlaces.exists)
+        XCTAssertTrue(museumCollectionsDetailsScreen.artistLabel.exists)
     }
 }

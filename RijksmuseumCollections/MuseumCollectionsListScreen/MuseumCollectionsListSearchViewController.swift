@@ -83,7 +83,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.navigationController?.navigationBar.accessibilityIdentifier = "objectsListScreen.navigationBarTitle"
         setupViews()
         layoutViews()
         setupSubscriptions()

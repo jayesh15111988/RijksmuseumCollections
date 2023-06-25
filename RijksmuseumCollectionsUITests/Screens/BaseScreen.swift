@@ -18,6 +18,7 @@ class BaseScreen {
     var cells: XCUIElementQuery { app.cells }
     var images: XCUIElementQuery { app.images }
     var otherElements: XCUIElementQuery { app.otherElements }
+    var navigationBars: XCUIElementQuery { app.navigationBars }
 
     func staticTextElement(with text: String) -> XCUIElement {
         staticTexts[text]

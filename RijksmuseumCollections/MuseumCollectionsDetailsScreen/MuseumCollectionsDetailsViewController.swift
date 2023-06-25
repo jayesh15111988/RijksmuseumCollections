@@ -35,6 +35,7 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.accessibilityIdentifier = "objectsDetailScreen.webImage"
         return imageView
     }()
 
@@ -49,6 +50,10 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
         let longTitleLabel = getLabelWith(text: viewModel.longTitle)
         let productionPlacesLabel = getLabelWith(text: viewModel.productionPlaces)
         let artistLabel = getLabelWith(text: viewModel.artist)
+
+        longTitleLabel.accessibilityIdentifier = "objectsDetailScreen.longTitle"
+        productionPlacesLabel.accessibilityIdentifier = "objectsDetailScreen.productionPlaces"
+        artistLabel.accessibilityIdentifier = "objectsDetailScreen.artistLabel"
 
         stackView.addArrangedSubview(longTitleLabel)
         stackView.addArrangedSubview(artObjectImageView)

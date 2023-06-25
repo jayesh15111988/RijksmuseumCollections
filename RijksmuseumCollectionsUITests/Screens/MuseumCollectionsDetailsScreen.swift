@@ -8,6 +8,9 @@
 import Foundation
 
 class MuseumCollectionsDetailsScreen: BaseScreen {
-
+    lazy var navigationTitle = navigationBars["objectsListScreen.navigationBarTitle"]
+    lazy var webImageView = images["objectsDetailScreen.webImage"]
+    lazy var longTitle = staticTexts["objectsDetailScreen.longTitle"]
+    lazy var productionPlaces = staticTexts["objectsDetailScreen.productionPlaces"]
+    lazy var artistLabel = staticTexts["objectsDetailScreen.artistLabel"]
 }
-
