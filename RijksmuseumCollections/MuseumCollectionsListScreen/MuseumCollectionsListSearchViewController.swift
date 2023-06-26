@@ -227,8 +227,8 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
     private func displayError(with message: String) {
 
-        let tryAgainAction = UIAlertAction(title: "Try Again", style: .default) { action in
-            self.viewModel.retryLastRequest()
+        let tryAgainAction = UIAlertAction(title: "Try Again", style: .default) { [weak self] action in
+            self?.viewModel.retryLastRequest()
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
@@ -293,6 +293,7 @@ extension MuseumCollectionsListSearchViewController: UISearchBarDelegate {
     /// A delegate method that gets called after user taps Search button
     /// - Parameter searchBar: An instance of UISearchBar on which this method is called
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        collectionView.setContentOffset(.zero, animated: false)
         dismissKeyboard()
         viewModel.searchCollections(with: searchBar.text)
     }

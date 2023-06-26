@@ -38,7 +38,7 @@ final class MuseumCollectionsListSearchViewModel {
     var artObjectViewModels: [ArtObjectViewModel] = []
     var currentSearchKeyword = ""
 
-    // Pagination starts from page #1
+    // Pagination starts from page #1. Page #0 and #1 are the same
     var currentPageNumber = 1
     var totalNumberOfObjects = 0
 
@@ -46,7 +46,7 @@ final class MuseumCollectionsListSearchViewModel {
 
     @Published var loadingState: LoadingState = .idle
 
-    var coordinator: MuseumCollectionsListSearchCoordinator?
+    weak var coordinator: MuseumCollectionsListSearchCoordinator?
 
     private let networkService: RequestHandling
     private let imageDownloader: ImageDownloadable
