@@ -11,10 +11,11 @@ import XCTest
 // We will use it to execute common operations applicable on app startup
 class BaseTest: XCTestCase {
 
-    let app = XCUIApplication()
+    var app: XCUIApplication!
 
     override func setUp() {
         super.setUp()
+        app = XCUIApplication()
         app.launch()
     }
 }

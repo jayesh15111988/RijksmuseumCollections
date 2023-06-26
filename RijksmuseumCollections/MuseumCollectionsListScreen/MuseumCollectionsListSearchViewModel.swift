@@ -46,7 +46,7 @@ final class MuseumCollectionsListSearchViewModel {
 
     @Published var loadingState: LoadingState = .idle
 
-    weak var coordinator: MuseumCollectionsListSearchCoordinator?
+    var coordinator: MuseumCollectionsListSearchCoordinator?
 
     private let networkService: RequestHandling
     private let imageDownloader: ImageDownloadable
