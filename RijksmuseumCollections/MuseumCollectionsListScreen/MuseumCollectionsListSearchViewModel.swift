@@ -55,7 +55,7 @@ final class MuseumCollectionsListSearchViewModel {
     init(networkService: RequestHandling, imageDownloader: ImageDownloadable = ImageDownloader.shared) {
         self.networkService = networkService
         self.imageDownloader = imageDownloader
-        self.title = "Rijksmuseum Collection"
+        title = "Rijksmuseum Collection"
     }
 
     /// A method to trigger searching art objects for input search text
@@ -102,7 +102,7 @@ final class MuseumCollectionsListSearchViewModel {
     ///   - searchText: A keyword on which to perform search
     ///   - pageNumber: A page number for the request
     private func loadItems(with searchText: String, pageNumber: Int) {
-        self.loadingState = .loading
+        loadingState = .loading
         networkService.request(type: ArtObjectsContainer.self, route: .getCollectionsList(searchKeyword: searchText, pageNumber: pageNumber)) { [weak self] result in
 
             guard let self else { return }
@@ -144,14 +144,14 @@ final class MuseumCollectionsListSearchViewModel {
 
             return ArtObjectViewModel(id: artObject.id, title: artObject.title, longTitle: artObject.longTitle, productionPlacesList: artObject.productionPlaces.joined(separator: ", "), webImageURL: artObject.webImage?.url, headerImageURL: artObject.headerImage?.url, makerName: artObject.principalOrFirstMaker, shortDescription: shortDescription) }
 
-        if self.artObjectViewModels.isEmpty {
-            self.artObjectViewModels = localArtObjectViewModels
+        if artObjectViewModels.isEmpty {
+            artObjectViewModels = localArtObjectViewModels
         } else {
-            self.artObjectViewModels.append(contentsOf: localArtObjectViewModels)
+            artObjectViewModels.append(contentsOf: localArtObjectViewModels)
         }
-        self.loadingState = .success(viewModels: self.artObjectViewModels)
+        loadingState = .success(viewModels: artObjectViewModels)
 
-        toLoadMoreCollections = self.artObjectViewModels.count < totalNumberOfObjects
+        toLoadMoreCollections = artObjectViewModels.count < totalNumberOfObjects
     }
 
     /// A method to decide whether to load next page or not depending on current cell index

@@ -44,7 +44,7 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         layoutViews()
-        configureViews(with: self.viewModel)
+        configureViews(with: viewModel)
     }
 
     func configureViews(with viewModel: MuseumCollectionsDetailsViewModel) {
@@ -77,7 +77,7 @@ final class MuseumCollectionsDetailsViewController: UIViewController {
             artistLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
         ])
 
-        self.artObjectImageView.downloadImage(with: viewModel.collectionImageURL, placeholderImage: Images.placeholder)
+        artObjectImageView.downloadImage(with: viewModel.collectionImageURL, placeholderImage: Images.placeholder)
     }
 
     init(viewModel: MuseumCollectionsDetailsViewModel, imageDownloader: ImageDownloadable = ImageDownloader.shared) {

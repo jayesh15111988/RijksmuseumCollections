@@ -83,7 +83,7 @@ final class ImageDownloader: ImageDownloadable {
                 self.executeClosureOnMainThread(with: completionHandler, image: image, isCached: false, imageURLString: imageUrlString)
             }
             // We want to control the access to no-thread-safe dictionary in case it's being accessed by multiple threads at once
-            self.serialQueueForDataTasks.sync(flags: .barrier) { [weak self] in
+            serialQueueForDataTasks.sync(flags: .barrier) { [weak self] in
                 self?.imagesDownloadTasks[imageUrlString] = task
             }
 
@@ -93,7 +93,7 @@ final class ImageDownloader: ImageDownloadable {
 
     /// A method to clear all the cached images in the app
     func clearCache() {
-        self.serialQueueForImages.sync(flags: .barrier) { [weak self] in
+        serialQueueForImages.sync(flags: .barrier) { [weak self] in
             self?.cachedImages.removeAll()
         }
 
@@ -154,7 +154,7 @@ extension UIImageView {
     func downloadImage(with imageUrlString: String?,
                        placeholderImage: UIImage?,
                        imageDownloader: ImageDownloadable = ImageDownloader.shared) {
-        self.image = placeholderImage
+        image = placeholderImage
 
         imageDownloader.downloadImage(with: imageUrlString, completionHandler: { [weak self] (image, isCached, urlString) in
             guard let image else { return }

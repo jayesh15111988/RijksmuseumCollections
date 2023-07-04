@@ -28,10 +28,10 @@ final class MuseumCollectionsDetailsViewModel {
             artistName = "Unknown Artist"
         }
 
-        self.collectionImageURL = artObjectViewModel.webImageURL
-        self.shortTitle = artObjectViewModel.title
-        self.longTitle = artObjectViewModel.longTitle
-        self.artist = "Artist: \(artistName)"
+        collectionImageURL = artObjectViewModel.webImageURL
+        shortTitle = artObjectViewModel.title
+        longTitle = artObjectViewModel.longTitle
+        artist = "Artist: \(artistName)"
         self.productionPlaces = "Production Places: \(productionPlaces)"
     }
 }

@@ -25,13 +25,13 @@ final class MuseumCollectionsListSearchScreen: BaseScreen {
 
     @discardableResult
     func performSearch(with keyword: String) -> Self {
-        self.tapSearchField()
+        tapSearchField()
         searchField.typeText(keyword)
         searchButton.tap()
         return self
     }
 
     func tapCell(with identifier: String) {
-        self.cell(with: identifier).tap()
+        cell(with: identifier).tap()
     }
 }

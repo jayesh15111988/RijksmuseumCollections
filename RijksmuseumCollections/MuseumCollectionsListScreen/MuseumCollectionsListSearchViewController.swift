@@ -233,7 +233,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
 
-        self.alertDisplayUtility.showAlert(with: "Error", message: message, actions: [cancelAction, tryAgainAction], parentController: self)
+        alertDisplayUtility.showAlert(with: "Error", message: message, actions: [cancelAction, tryAgainAction], parentController: self)
     }
 
     private func updateDisplayState(with isShowingResultsList: Bool, message: String?) {
@@ -244,8 +244,8 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
             userInfoLabel.text = message
         }
 
-        self.userInfoLabelParentView.isHidden = isShowingResultsList
-        self.collectionView.isHidden = !isShowingResultsList
+        userInfoLabelParentView.isHidden = isShowingResultsList
+        collectionView.isHidden = !isShowingResultsList
     }
 
     private func setupDatasource() -> DataSource {
@@ -275,7 +275,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
         let items = [flexSpace, done]
         doneToolbar.items = items
 
-        self.searchBar.searchTextField.inputAccessoryView = doneToolbar
+        searchBar.searchTextField.inputAccessoryView = doneToolbar
     }
 
     @objc private func doneButtonPressed() {
@@ -283,7 +283,7 @@ final class MuseumCollectionsListSearchViewController: UIViewController {
     }
 
     private func dismissKeyboard() {
-        self.searchBar.searchTextField.resignFirstResponder()
+        searchBar.searchTextField.resignFirstResponder()
     }
 }
 

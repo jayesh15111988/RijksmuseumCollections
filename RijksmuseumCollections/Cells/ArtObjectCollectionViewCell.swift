@@ -54,8 +54,7 @@ final class ArtObjectCollectionViewCell: UICollectionViewCell {
 
     func configure(with viewModel: ArtObjectViewModel) {
         artObjectTitleLabel.text = viewModel.shortDescription
-
-        self.coverImageView.downloadImage(with: viewModel.headerImageURL, placeholderImage: Images.placeholder)
+        coverImageView.downloadImage(with: viewModel.headerImageURL, placeholderImage: Images.placeholder)
     }
 
     override func prepareForReuse() {

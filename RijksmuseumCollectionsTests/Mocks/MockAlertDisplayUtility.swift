@@ -15,7 +15,7 @@ final class MockAlertDisplayUtility: AlertDisplayable {
     var shownMessage = ""
 
     func showAlert(with title: String, message: String, actions: [UIAlertAction], parentController: UIViewController) {
-        self.shownTitle = title
-        self.shownMessage = message
+        shownTitle = title
+        shownMessage = message
     }
 }

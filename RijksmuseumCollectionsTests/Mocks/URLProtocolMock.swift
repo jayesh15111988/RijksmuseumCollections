@@ -24,21 +24,21 @@ final class URLProtocolMock: URLProtocol {
             if let (error, data, response) = URLProtocolMock.mockURLs[url] {
 
                 if let responseStrong = response {
-                    self.client?.urlProtocol(self, didReceive: responseStrong, cacheStoragePolicy: .notAllowed)
+                    client?.urlProtocol(self, didReceive: responseStrong, cacheStoragePolicy: .notAllowed)
                 }
 
                 if let dataStrong = data {
-                    self.client?.urlProtocol(self, didLoad: dataStrong)      
+                    client?.urlProtocol(self, didLoad: dataStrong)      
                 }
 
                 if let errorStrong = error {
-                    self.client?.urlProtocol(self, didFailWithError: errorStrong)
+                    client?.urlProtocol(self, didFailWithError: errorStrong)
                 }
             }
         }
 
         DispatchQueue.main.async {
-            self.client?.urlProtocolDidFinishLoading(self)
+            client?.urlProtocolDidFinishLoading(self)
         }
     }
 

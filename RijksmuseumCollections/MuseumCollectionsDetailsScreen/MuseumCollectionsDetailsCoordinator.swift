@@ -14,7 +14,7 @@ final class MuseumCollectionsDetailsCoordinator: Coordinator {
     private let viewModel: ArtObjectViewModel
 
     init(navController: UINavigationController, viewModel: ArtObjectViewModel) {
-        self.rootViewController = navController
+        rootViewController = navController
         self.viewModel = viewModel
     }
 
@@ -25,7 +25,7 @@ final class MuseumCollectionsDetailsCoordinator: Coordinator {
 
         collectionDetailsViewModel.coordinator = self
 
-        self.rootViewController.pushViewController(collectionDetailsViewController, animated: true)
+        rootViewController.pushViewController(collectionDetailsViewController, animated: true)
     }
 }
 

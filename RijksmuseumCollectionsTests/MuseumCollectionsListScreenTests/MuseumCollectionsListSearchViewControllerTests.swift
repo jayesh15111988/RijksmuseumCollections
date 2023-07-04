@@ -59,8 +59,8 @@ final class MuseumCollectionsListSearchViewControllerTests: XCTestCase {
 
         DispatchQueue.main.async {
             if case .failure = museumCollectionsListSearchViewModel.loadingState {
-                XCTAssertEqual(self.alertDisplayableUtility.shownTitle, "Error", "The shown error message should have the title as 'Error'")
-                XCTAssertEqual(self.alertDisplayableUtility.shownMessage, "Something went wrong while loading a request", "The shown error message should have the body as 'Something went wrong while loading a request'")
+                XCTAssertEqual(alertDisplayableUtility.shownTitle, "Error", "The shown error message should have the title as 'Error'")
+                XCTAssertEqual(alertDisplayableUtility.shownMessage, "Something went wrong while loading a request", "The shown error message should have the body as 'Something went wrong while loading a request'")
                 expectation.fulfill()
             }
         }

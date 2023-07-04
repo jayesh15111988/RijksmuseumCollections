@@ -9,6 +9,7 @@ import Foundation
 
 /// An enum to encode all the operations associated with specific endpoint
 enum APIRoute {
+
     case getCollectionsList(searchKeyword: String, pageNumber: Int)
 
     // Base URL on which all the URL requests are based

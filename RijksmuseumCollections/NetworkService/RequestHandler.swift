@@ -85,8 +85,9 @@ final class RequestHandler: RequestHandling {
             do {
                 let responsePayload = try self.decoder.decode(type.self, from: data)
                 completion(.success(responsePayload))
-            } catch {
+            } catch let error {
                 completion(.failure(.malformedContent))
+                print("Failed to decode incoming JSON due to error : \((error as NSError).localizedDescription)")
             }
         }
 

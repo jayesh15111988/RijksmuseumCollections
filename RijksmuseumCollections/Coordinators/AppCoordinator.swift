@@ -16,7 +16,7 @@ final class AppCoordinator: Coordinator {
 
     init(window: UIWindow) {
         self.window = window
-        self.rootViewController = UINavigationController()
+        rootViewController = UINavigationController()
     }
 
     func start() {
@@ -29,8 +29,8 @@ final class AppCoordinator: Coordinator {
         let collectionsListSearchCoordinator = MuseumCollectionsListSearchCoordinator(navController: rootViewController)
         collectionsListSearchCoordinator.start()
 
-        self.window.rootViewController = rootViewController
-        self.window.makeKeyAndVisible()
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
     }
 }
 

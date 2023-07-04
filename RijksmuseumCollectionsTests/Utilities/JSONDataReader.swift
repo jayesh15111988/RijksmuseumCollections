@@ -14,7 +14,7 @@ final class JSONDataReader {
     /// - Returns: A specified Decodable model objet
     static func getModelFromJSONFile<T: Decodable>(with name: String) -> T? {
 
-        guard let jsonData = self.getDataFromJSONFile(with: name) else {
+        guard let jsonData = getDataFromJSONFile(with: name) else {
             return nil
         }
 
