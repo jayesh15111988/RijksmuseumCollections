@@ -57,7 +57,7 @@ final class MuseumCollectionsListSearchViewControllerTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "View controller state is set to failure")
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             if case .failure = museumCollectionsListSearchViewModel.loadingState {
                 XCTAssertEqual(alertDisplayableUtility.shownTitle, "Error", "The shown error message should have the title as 'Error'")
                 XCTAssertEqual(alertDisplayableUtility.shownMessage, "Something went wrong while loading a request", "The shown error message should have the body as 'Something went wrong while loading a request'")

@@ -37,7 +37,7 @@ final class URLProtocolMock: URLProtocol {
             }
         }
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             client?.urlProtocolDidFinishLoading(self)
         }
     }
